@@ -10,7 +10,7 @@ export default function Home() {
         </p>
       </section>
 
-      <section>
+      {/* <section>
         <h2 className="text-4xl font-semibold">Project 01</h2>
         <p className="text-gray-500">Visualisasi Algoritma</p>
       </section>
@@ -23,7 +23,7 @@ export default function Home() {
       <section className="pb-20">
         <h2 className="text-4xl font-semibold">Contact</h2>
         <p className="text-gray-500">Mari bekerja sama.</p>
-      </section>
+      </section> */}
     </div>
   );
 }
