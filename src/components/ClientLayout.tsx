@@ -1,24 +1,27 @@
-'use client';
+'use client'
 
-import dynamic from 'next/dynamic';
-import SmoothScroll from '@/components/SmoothScroll';
-
-const Scene = dynamic(() => import('@/components/Scene'), { ssr: false });
+import Scene from './Scene'
+import SmoothScroll from './SmoothScroll'
+import Loader from './Loader'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  const handleLoaderFinished = () => {
+    window.dispatchEvent(new Event('start-site-intro'))
+  }
+
   return (
     <>
-      {/* Layer 1: Canvas 3D (Background/Immersive) */}
-      <div className="fixed inset-0 z-0 touch-none">
+      <Loader onFinished={handleLoaderFinished} />
+      
+      <div className="fixed inset-0 z-0">
         <Scene />
       </div>
 
-      {/* Layer 2: Konten HTML (Scrollable) */}
-      <main className="relative z-10">
+      <main className="relative z-10 bg-transparent">
         <SmoothScroll>
           {children}
         </SmoothScroll>
       </main>
     </>
-  );
+  )
 }
