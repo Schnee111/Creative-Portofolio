@@ -1,7 +1,7 @@
 'use client'
 
 import * as THREE from 'three'
-import React, { JSX, useState, useEffect } from 'react' // Tambahkan useState & useEffect
+import React, { JSX, useState, useEffect } from 'react'
 import { useGLTF, Html } from '@react-three/drei' 
 
 export function ModelRoom(props: JSX.IntrinsicElements['group']) {
