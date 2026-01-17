@@ -9,7 +9,7 @@ export default function ProjectShowcase() {
     <div className="relative bg-[#050505] selection:bg-blue-500/30">
       
       {/* LIST VIEW - NAVIGASI UTAMA */}
-      <section className="min-h-screen flex flex-col justify-center p-10 md:p-24 pt-24 md:pt-32">
+      <section className="min-h-screen flex flex-col justify-center p-10 md:p-24 pt-8 md:pt-32">
         <motion.span 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 0.4, x: 0 }}
