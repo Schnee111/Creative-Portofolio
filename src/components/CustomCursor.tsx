@@ -81,7 +81,7 @@ export default function CustomCursor() {
         className="fixed top-0 left-0 w-6 h-6 border border-blue-500 rounded-full z-[998] pointer-events-none mix-blend-difference"
         style={{ x: cursorX, y: cursorY, translateX: '-50%', translateY: '-50%' }}
         animate={{
-          backgroundColor: isHovered ? "rgba(59, 130, 246, 0.5)" : "rgba(0, 0, 0, 0)",
+          backgroundColor: isHovered ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0)",
           scale: isHovered ? 1.3 : 1,
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
