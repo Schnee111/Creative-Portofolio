@@ -65,9 +65,6 @@ export default function ProjectShowcase() {
           ))}
         </div>
       </section>
-
-      {/* Footer dihapus sesuai permintaan */}
-
     </div>
   )
 }

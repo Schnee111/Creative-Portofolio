@@ -1,48 +1,34 @@
 'use client'
 
-import { useState, useRef, useEffect, useMemo } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import Link from 'next/link'
 import gsap from 'gsap'
 import { projects } from '@/config/projects'
 
-const transition = { 
-  duration: 1.2, 
-  ease: [0.22, 1, 0.36, 1] 
-} as const;
-
-// Komponen Media dengan Observer yang presisi
 const ProjectMedia = ({ src, alt, type, rootRef }: { src: string; alt: string; type: string; rootRef: any }) => {
   const containerRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
-  const isInView = useInView(containerRef, { 
-    root: rootRef, 
-    once: true, 
-    margin: "0px 100px 0px 100px" 
-  });
+  const isInView = useInView(containerRef, { root: rootRef, once: true, margin: "0px 200px 0px 200px" });
 
   return (
     <motion.div 
       ref={containerRef}
-      className={`relative overflow-hidden flex-shrink-0 mx-8 transition-all duration-[1.5s]
-        ${type === 'full' ? 'h-[80vh] w-[75vw]' : type === 'tall' ? 'h-[75vh] w-[35vw] rounded-2xl' : 'h-[55vh] w-[30vw] rounded-xl shadow-xl'}
-        bg-neutral-900
+      initial={{ clipPath: 'inset(0% 100% 0% 0%)', opacity: 0 }}
+      animate={isInView ? { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1 } : {}}
+      transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+      className={`relative overflow-hidden flex-shrink-0 mx-12 
+        ${type === 'full' ? 'h-[82vh] w-[80vw]' : type === 'tall' ? 'h-[78vh] w-[38vw] rounded-2xl' : 'h-[58vh] w-[32vw] rounded-xl shadow-2xl'}
+        bg-neutral-900 border border-white/5
       `}
-      style={{
-        clipPath: isInView ? 'inset(0% 0% 0% 0%)' : 'inset(0% 100% 0% 0%)',
-        opacity: isInView ? 1 : 0,
-      }}
     >
       <img 
         src={src} 
         alt={alt} 
         onLoad={() => setLoaded(true)}
-        className={`w-full h-full object-cover transition-all duration-[1.5s] ${loaded ? 'scale-100 opacity-100' : 'scale-110 opacity-0'}`} 
+        className={`w-full h-full object-cover transition-all duration-[2s] ${loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`} 
       />
-      <div className="absolute bottom-4 left-4 font-mono text-[7px] text-white/20 uppercase tracking-[0.3em]">
-        NODE_ASSET // {alt}
-      </div>
     </motion.div>
   );
 };
@@ -51,12 +37,21 @@ export default function ProjectDetail() {
   const { id } = useParams()
   const router = useRouter()
   const [switchProgress, setSwitchProgress] = useState(0)
+  const [mounted, setMounted] = useState(false)
   
+  // State untuk mengontrol angka yang muncul di transisi
+  const [displayId, setDisplayId] = useState(id as string)
+  
+  const mainRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const panelsRef = useRef<HTMLDivElement[]>([])
+
   const targetScrollRef = useRef(0)
   const currentScrollRef = useRef(0)
   const bufferRef = useRef(0)
   const animationFrameRef = useRef<number | null>(null)
+  const isNavigating = useRef(false)
 
   const currentProject = useMemo(() => projects.find(p => p.id === id), [id])
   const nextProject = useMemo(() => {
@@ -66,152 +61,225 @@ export default function ProjectDetail() {
   }, [id, currentProject])
 
   useEffect(() => {
-    const el = scrollContainerRef.current
-    if (!el || !currentProject) return
+    setMounted(true)
+    setDisplayId(id as string) // Reset displayId saat project berubah
+  }, [id])
+
+  useLayoutEffect(() => {
+    if (!mounted) return
+
+    isNavigating.current = true
+    targetScrollRef.current = 0
+    currentScrollRef.current = 0
+    if (scrollContainerRef.current) scrollContainerRef.current.scrollLeft = 0
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          isNavigating.current = false
+        }
+      })
+
+      tl.to(panelsRef.current, {
+        x: "100%",
+        stagger: 0.1,
+        duration: 1.2,
+        ease: "expo.inOut"
+      })
+      .from(contentRef.current, {
+        scale: 0.96,
+        filter: "blur(15px)",
+        opacity: 0,
+        duration: 1,
+        ease: "power2.out"
+      }, "-=0.8")
+    }, mainRef)
+
+    return () => ctx.revert()
+  }, [id, mounted])
+
+  useEffect(() => {
+    if (!mounted) return
 
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault()
-      const maxScroll = el.scrollWidth - el.clientWidth
+      if (isNavigating.current) {
+        e.preventDefault()
+        return
+      }
+
+      const el = scrollContainerRef.current
+      if (!el) return
       
-      if (currentScrollRef.current >= maxScroll - 5 && e.deltaY > 0) {
+      const maxScroll = el.scrollWidth - el.clientWidth
+      if (maxScroll <= 0) return 
+
+      if (currentScrollRef.current >= maxScroll - 10 && e.deltaY > 0) {
+        e.preventDefault()
         bufferRef.current += e.deltaY
-        setSwitchProgress(Math.min(100, (bufferRef.current / 800) * 100))
-        if (bufferRef.current > 800) {
-          gsap.to(".global-wipe", { x: "0%", duration: 0.8, ease: "expo.inOut", onComplete: () => router.push(`/project/${nextProject?.id}`) })
+        const prog = Math.min(100, (bufferRef.current / 700) * 100)
+        setSwitchProgress(prog)
+
+        if (bufferRef.current > 700) {
+          triggerExitTransition()
         }
       } else {
-        bufferRef.current = Math.max(0, bufferRef.current - 50)
-        setSwitchProgress((bufferRef.current / 800) * 100)
-        targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current + e.deltaY * 2.2, maxScroll))
+        if (Math.abs(e.deltaY) > 0) {
+          e.preventDefault()
+          bufferRef.current = Math.max(0, bufferRef.current - 40)
+          setSwitchProgress((bufferRef.current / 700) * 100)
+          targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current + e.deltaY * 2.5, maxScroll))
+        }
       }
     }
 
+    const triggerExitTransition = () => {
+      if (isNavigating.current) return
+      
+      // Update angka transisi ke project tujuan sebelum tirai menutup
+      if (nextProject) setDisplayId(nextProject.id)
+      
+      isNavigating.current = true
+
+      const tl = gsap.timeline({
+        onComplete: () => router.push(`/project/${nextProject?.id}`)
+      })
+
+      tl.set(panelsRef.current, { x: "-100%" })
+        .to(panelsRef.current, {
+          x: "0%",
+          stagger: 0.08,
+          duration: 0.8,
+          ease: "expo.inOut"
+        })
+        .to(contentRef.current, {
+          opacity: 0,
+          scale: 1.05,
+          filter: "blur(20px)",
+          duration: 0.8
+        }, "-=0.8")
+    }
+
     const smoothLoop = () => {
-      currentScrollRef.current += (targetScrollRef.current - currentScrollRef.current) * 0.08
-      el.scrollLeft = currentScrollRef.current
-      const progress = (el.scrollLeft / (el.scrollWidth - el.clientWidth)) * 100
-      const progressBar = document.getElementById('scroll-progress')
-      if (progressBar) progressBar.style.width = `${progress}%`
+      if (scrollContainerRef.current) {
+        currentScrollRef.current += (targetScrollRef.current - currentScrollRef.current) * 0.08
+        scrollContainerRef.current.scrollLeft = currentScrollRef.current
+        const max = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth
+        const progress = max > 0 ? (currentScrollRef.current / max) * 100 : 0
+        const progressBar = document.getElementById('scroll-progress')
+        if (progressBar) progressBar.style.width = `${progress}%`
+      }
       animationFrameRef.current = requestAnimationFrame(smoothLoop)
     }
 
-    el.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('wheel', onWheel, { passive: false })
     animationFrameRef.current = requestAnimationFrame(smoothLoop)
+
     return () => {
-      el.removeEventListener('wheel', onWheel)
+      window.removeEventListener('wheel', onWheel)
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current)
     }
-  }, [id, currentProject, nextProject, router])
+  }, [id, nextProject, router, mounted])
 
-  if (!currentProject) return null
+  if (!currentProject || !mounted) return null
 
   return (
-    <main className="fixed inset-0 h-screen w-screen bg-[#050505] overflow-hidden overscroll-none font-sans selection:bg-blue-500/30">
-      <div className="global-wipe fixed inset-0 bg-blue-600 z-[500] translate-x-[-100%] pointer-events-none" />
-
-      {/* Navigasi Minimalis */}
-      <nav className="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-[350] pointer-events-none font-mono">
-        <div className="flex flex-col gap-1">
-          <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-blue-500 text-[9px] tracking-[0.4em] uppercase font-bold">
-            Project_Node // {currentProject.id}
-          </motion.span>
-          <div className="h-[1px] w-8 bg-blue-500/30" />
-        </div>
-        <Link href="/dashboard" className="pointer-events-auto text-white/30 hover:text-white text-[9px] tracking-widest uppercase border border-white/5 px-6 py-2 rounded-full backdrop-blur-md bg-white/[0.02] transition-all">
-          [ back_to_archives ]
-        </Link>
-      </nav>
-
-      <div ref={scrollContainerRef} className="h-full w-full overflow-x-auto flex hide-scrollbar touch-pan-x overscroll-none">
-        <div className="flex h-full min-w-max items-center">
-          
-          {/* 1. HERO SECTION (Font Scaled Down) */}
-          <section className="w-screen h-full flex flex-col justify-center p-10 md:p-24 flex-shrink-0 relative border-r border-white/5">
-            <div className="absolute inset-0 opacity-10 bg-black">
-              <img src={currentProject.mainImage} alt="" className="w-full h-full object-cover blur" />
-            </div>
-            <div className="relative z-10">
-              <div className="overflow-hidden mb-6">
-                <motion.span initial={{ y: "100%" }} animate={{ y: 0 }} transition={{ ...transition, delay: 0.5 }} className="text-blue-500 font-mono text-[10px] tracking-[0.6em] block uppercase font-bold">
-                  {currentProject.subtitle}
-                </motion.span>
-              </div>
-              <motion.h1 
-                initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={transition}
-                className="text-6xl md:text-[7vw] font-display font-black uppercase italic leading-[0.85] text-white tracking-tighter mb-10"
-              >
-                {currentProject.title}
-              </motion.h1>
-              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} transition={{ delay: 0.6 }} className="text-base md:text-lg text-white max-w-lg leading-relaxed font-light italic lowercase">
-                {currentProject.desc}
-              </motion.p>
-            </div>
-          </section>
-
-          {/* 2. ANALYSIS SECTION (Refined Sizes to prevent cut-off) */}
-          {currentProject.sections.map((section, idx) => (
-            <section key={idx} className="w-[40vw] h-full flex items-center p-10 md:p-16 border-r border-white/5 flex-shrink-0 bg-white/[0.01]">
-              <div className="space-y-10 w-full max-h-[85vh] flex flex-col justify-center">
-                <div className="w-full aspect-[16/10] overflow-hidden rounded-lg border border-white/5 shadow-2xl">
-                   <ProjectMedia src={currentProject.gallery[idx]?.url || currentProject.mainImage} alt="Analysis" type="card" rootRef={scrollContainerRef} />
-                </div>
-                <div className="space-y-4 px-2">
-                  <span className="text-blue-500 font-mono text-[9px] uppercase tracking-[0.4em] font-bold opacity-70">
-                    // 0{idx + 1}_{section.title}
+    <main ref={mainRef} className="fixed inset-0 h-screen w-screen bg-[#050505] overflow-hidden font-sans">
+      
+      {/* 🎭 MULTI-PANEL OVERLAY */}
+      <div className="fixed inset-0 z-[999] pointer-events-none flex flex-col">
+        {[...Array(3)].map((_, i) => (
+          <div 
+            key={i} 
+            ref={(el) => { if (el) panelsRef.current[i] = el }}
+            className="flex-1 bg-blue-600 w-full relative border-b border-white/5"
+            style={{ transform: 'translateX(0%)' }}
+          >
+            {/* PERBAIKAN: Gunakan displayId di sini */}
+            {i === 1 && (
+               <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-white/10 font-black text-[15vw] italic select-none uppercase">
+                    {displayId}
                   </span>
-                  <h3 className="text-xl md:text-2xl text-white/80 font-light leading-snug tracking-tight">
-                    {section.content}
-                  </h3>
-                </div>
+               </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* 📦 CONTENT WRAPPER */}
+      <div ref={contentRef} className="h-full w-full">
+        <nav className="fixed top-0 w-full p-8 md:p-12 flex justify-between items-center z-[350] pointer-events-none font-mono">
+          <div className="flex flex-col gap-1">
+            <span className="text-blue-500 text-[10px] tracking-[0.4em] uppercase font-bold">Node // {currentProject.id}</span>
+            <div className="h-[1px] w-12 bg-blue-500/30" />
+          </div>
+          <Link href="/dashboard" className="pointer-events-auto text-white/30 hover:text-white text-[9px] tracking-widest uppercase border border-white/5 px-6 py-2 rounded-full backdrop-blur-md bg-white/[0.02] transition-all">
+            [ EXIT_NODE ]
+          </Link>
+        </nav>
+
+        <div 
+          ref={scrollContainerRef} 
+          className="h-full w-full overflow-x-auto flex hide-scrollbar overscroll-none relative z-10"
+        >
+          <div className="flex h-full min-w-max items-center pr-0">
+            {/* HERO */}
+            <section className="w-screen h-full flex flex-col justify-center p-12 md:p-32 flex-shrink-0 relative border-r border-white/5">
+              <div className="absolute inset-0 opacity-20">
+                <img src={currentProject.mainImage} className="w-full h-full object-cover blur-3xl" alt="" />
+              </div>
+              <div className="relative z-10 max-w-5xl">
+                <span className="text-blue-500 font-mono text-[11px] tracking-[0.8em] block uppercase mb-8 font-black">{currentProject.subtitle}</span>
+                <h1 className="text-6xl md:text-[8vw] font-display font-black uppercase italic leading-[0.8] text-white tracking-tighter mb-12">{currentProject.title}</h1>
+                <p className="text-lg md:text-xl text-white/30 max-w-2xl font-light italic lowercase leading-relaxed">{currentProject.desc}</p>
               </div>
             </section>
-          ))}
 
-          {/* 3. GALLERY SECTION */}
-          <section className="min-w-max h-full flex items-center px-0 flex-shrink-0 border-r border-white/5">
-            {currentProject.gallery.map((img, i) => (
-              <ProjectMedia key={i} src={img.url} alt={`gallery-${i}`} type={img.type} rootRef={scrollContainerRef} />
-            ))}
-          </section>
-
-          {/* 4. BRIDGE SECTION (Small Right Section with Image) */}
-          {nextProject && (
-            <section className="w-[45vw] h-full flex items-center justify-center flex-shrink-0 relative overflow-hidden bg-[#0a0a0a] group border-l border-white/5">
-              {/* Background Image restricted to this section */}
-              <div className="absolute inset-0 z-0 opacity-20 grayscale group-hover:grayscale-0 group-hover:opacity-40 transition-all duration-1000">
-                <img src={nextProject.mainImage} alt="next" className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-[2s]" />
-                <div className="absolute inset-0 bg-gradient-to-l from-black via-transparent to-black" />
-              </div>
-
-              <div className="relative z-10 text-center px-12">
-                <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ root: scrollContainerRef }}>
-                  <p className="text-blue-500 font-mono text-[9px] uppercase tracking-[0.8em] mb-12 italic font-black">Next_Archive</p>
-                  <h2 className="text-4xl md:text-5xl font-display font-black uppercase italic text-white/20 group-hover:text-white transition-all duration-700 leading-none tracking-tighter mb-14">
-                    {nextProject.title}
-                  </h2>
-                  <div className="flex flex-col items-center gap-6">
-                    <div className="w-40 h-[1px] bg-white/10 relative overflow-hidden">
-                      <motion.div style={{ width: `${switchProgress}%` }} className="h-full bg-blue-500 shadow-[0_0_15px_#3b82f6]" />
-                    </div>
-                    <span className="text-[8px] font-mono uppercase tracking-[0.4em] text-white/20">
-                      {switchProgress > 30 ? "RELEASING..." : "PULL_TO_SYNC"}
-                    </span>
+            {/* SECTIONS */}
+            {currentProject.sections.map((section, idx) => (
+              <section key={idx} className="w-[48vw] h-full flex items-center p-12 md:p-24 border-r border-white/5 flex-shrink-0 bg-white/[0.01]">
+                <div className="space-y-12 w-full flex flex-col">
+                  <ProjectMedia src={currentProject.gallery[idx]?.url || currentProject.mainImage} alt="Analysis" type="card" rootRef={scrollContainerRef} />
+                  <div className="space-y-6 px-4">
+                    <span className="text-blue-500 font-mono text-[10px] uppercase tracking-[0.5em] font-bold">// 0{idx+1}_{section.title}</span>
+                    <h3 className="text-2xl md:text-3xl text-white/80 font-light tracking-tight max-w-md">{section.content}</h3>
                   </div>
-                </motion.div>
-              </div>
-            </section>
-          )}
+                </div>
+              </section>
+            ))}
 
+            {/* GALLERY */}
+            <section className="min-w-max h-full flex items-center px-0 flex-shrink-0 border-r border-white/5">
+              {currentProject.gallery.map((img, i) => (
+                <ProjectMedia key={i} src={img.url} alt={`gallery-${i}`} type={img.type} rootRef={scrollContainerRef} />
+              ))}
+            </section>
+
+            {/* BRIDGE */}
+            {nextProject && (
+              <section className="w-[60vw] h-full flex items-center justify-center flex-shrink-0 relative overflow-hidden bg-[#0a0a0a] group border-l border-white/5">
+                <div className="absolute inset-0 z-0 opacity-20 grayscale group-hover:grayscale-0 transition-all duration-1000">
+                  <img src={nextProject.mainImage} className="w-full h-full object-cover" alt="" />
+                </div>
+                <div className="relative z-10 text-center">
+                  <p className="text-blue-500 font-mono text-[10px] uppercase tracking-[1em] mb-12 italic font-black animate-pulse">Next_Archive</p>
+                  <h2 className="text-4xl md:text-6xl font-display font-black uppercase italic text-white/20 group-hover:text-white transition-all duration-700 leading-none tracking-tighter mb-16">{nextProject.title}</h2>
+                  <div className="flex flex-col items-center gap-6">
+                    <div className="w-48 h-[2px] bg-white/10 relative overflow-hidden">
+                      <motion.div style={{ width: `${switchProgress}%` }} className="h-full bg-blue-500 shadow-[0_0_20px_#3b82f6]" />
+                    </div>
+                    <span className="text-[9px] font-mono uppercase tracking-[0.5em] text-white/20">{switchProgress > 30 ? "SYNCING..." : "PULL_TO_SYNC"}</span>
+                  </div>
+                </div>
+              </section>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* UI Elements */}
-      <div className="fixed bottom-0 left-0 w-full h-[2px] bg-white/5 z-[350] pointer-events-none">
-        <div id="scroll-progress" className="h-full bg-blue-500 shadow-[0_0_20px_#3b82f6]" />
+      <div className="fixed bottom-0 left-0 w-full h-[4px] bg-white/5 z-[350] pointer-events-none">
+        <div id="scroll-progress" className="h-full bg-blue-500 shadow-[0_0_30px_#3b82f6]" />
       </div>
-
-      {/* Subtle CRT Mask */}
-      <div className="fixed inset-0 pointer-events-none z-[400] opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,2px_100%]" />
     </main>
   )
 }
