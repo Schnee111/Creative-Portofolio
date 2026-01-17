@@ -7,6 +7,28 @@ import { useGLTF, Html } from '@react-three/drei'
 export function ModelRoom(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/computer-room.glb') as unknown as any
   
+  // === ⚡ OPTIMASI MATERIAL (BARU) ===
+  useEffect(() => {
+    // Loop semua material yang ada di dalam model
+    Object.values(materials).forEach((material: any) => {
+      // Pastikan material valid
+      if (material) {
+        // 1. Matikan Double Sided (Paksa render sisi depan saja)
+        // Ini mengaktifkan "Backface Culling" -> GPU hemat kerja 50%
+        material.side = THREE.FrontSide 
+
+        // 2. Matikan Transparent jika tidak perlu (Opsional, sangat bagus untuk performa)
+        // Jika material Anda solid (Meja, Dinding, Speaker), matikan transparansi
+        // material.transparent = false 
+        // material.alphaTest = 0.5 
+
+        // Update material agar perubahan diterapkan
+        material.needsUpdate = true
+      }
+    })
+  }, [materials])
+  // ===================================
+
   // Logic untuk Jam Digital
   const [time, setTime] = useState(new Date())
 
@@ -15,14 +37,13 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
     return () => clearInterval(timer)
   }, [])
 
-  // Format waktu ke HH:MM:SS
   const timeString = time.toLocaleTimeString('en-GB', { 
     hour12: false, 
     hour: '2-digit', 
     minute: '2-digit', 
     second: '2-digit' 
   })
-
+  
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={0.987}>
@@ -52,8 +73,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
           >
             <div className="monitor-screen fui-grid w-[450px] h-[750px] bg-[#050505]/95 p-6 font-mono shadow-[inset_0_0_60px_rgba(0,0,0,1)] text-[10px]">
               <div className="flex flex-col h-full relative z-20 overflow-hidden">
-                
-                {/* 1. TOP BAR - SYSTEM BROADCAST */}
                 <div className="flex justify-between items-center mb-6 border-b border-blue-500/20 pb-3">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
@@ -64,7 +83,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                   </div>
                 </div>
 
-                {/* 2. DYNAMIC LOGS - SCROLLING EFFECT */}
                 <div className="bg-white/[0.03] rounded-xl p-3 mb-6 border border-white/5">
                   <div className="flex justify-between text-[8px] text-white/30 mb-2 uppercase tracking-widest">
                     <span>Live Process Log</span>
@@ -79,7 +97,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                   </div>
                 </div>
 
-                {/* 3. METRICS GRID - LOAD SCALES */}
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   <div className="bg-blue-500/5 p-3 border border-blue-500/10 rounded-xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-1 opacity-20"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
@@ -102,7 +119,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                   </div>
                 </div>
 
-                {/* 4. RADAR & COORDS MODYULE */}
                 <div className="grid grid-cols-[1fr_120px] gap-4 mb-6">
                   <div className="relative h-32 border border-white/10 rounded-2xl bg-white/[0.02] flex items-center justify-center overflow-hidden">
                     <div className="absolute inset-0 fui-grid opacity-20" />
@@ -128,7 +144,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                   </div>
                 </div>
 
-                {/* 5. TASKS - MINI CHECKLIST */}
                 <div className="flex-1 space-y-2 mb-6 opacity-60">
                   <p className="text-[8px] text-white/20 uppercase tracking-[0.3em] mb-2">Active_Project_Nodes</p>
                   {["Deploying_ThreeJS_Engine", "Optimizing_GSAP_Timeline", "Configuring_Environment", "Finalizing_Asset_Loader"].map((text, i) => (
@@ -141,7 +156,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                   ))}
                 </div>
 
-                {/* 6. BOTTOM BAR - TIME & GLOBAL INFO */}
                 <div className="mt-auto border-t border-white/10 pt-4 bg-gradient-to-t from-blue-500/5 to-transparent">
                   <div className="flex justify-between items-end">
                     <div className="space-y-1">
@@ -178,7 +192,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
           >
             <div className="monitor-screen fui-grid w-[1055px] h-[455px] bg-[#030303] flex flex-col overflow-hidden">
               
-              {/* 1. OS TOP BAR */}
               <div className="w-full h-10 bg-white/5 border-b border-white/10 flex items-center justify-between px-8">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500/40" />
@@ -192,10 +205,8 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
               </div>
 
               <div className="flex-1 p-10 flex gap-10 relative">
-                {/* Decorative Grid background internal */}
                 <div className="absolute inset-0 fui-grid opacity-20 pointer-events-none" />
 
-                {/* 2. LEFT SIDE: MAIN IDENTITY */}
                 <div className="flex-1 flex flex-col justify-center relative z-10">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="px-3 py-1 bg-blue-500/10 border border-blue-500/30 rounded-md">
@@ -212,10 +223,8 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                   </p>
                 </div>
 
-                {/* 3. RIGHT SIDE: QUICK STATS WIDGETS */}
                 <div className="w-[300px] flex flex-col justify-center gap-4 relative z-10">
                   
-                  {/* Project Progress Widget */}
                   <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 -blur-md">
                     <div className="flex justify-between items-end mb-4">
                       <span className="text-[10px] text-white/40 uppercase tracking-widest">Active Project</span>
@@ -227,7 +236,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                     <p className="text-white/60 text-[9px] font-mono italic">Syncing Room_Assets...</p>
                   </div>
 
-                  {/* System Performance Mini */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-4">
                       <p className="text-[8px] text-white/30 uppercase mb-2">Core Temp</p>
@@ -239,7 +247,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                     </div>
                   </div>
 
-                  {/* Interactive Visualizer Bottom */}
                   <div className="h-20 flex items-center justify-around gap-1 px-2">
                     {[...Array(20)].map((_, i) => (
                       <div 
@@ -255,7 +262,6 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                 </div>
               </div>
 
-              {/* 4. BOTTOM DECORATIVE LINE */}
               <div className="h-1 w-full bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
             </div>
           </Html>
