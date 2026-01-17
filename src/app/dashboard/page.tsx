@@ -8,18 +8,11 @@ import ExpertiseColumns from '@/components/ExpertiseColumns'
 
 export default function DashboardPage() {
   const router = useRouter()
-  
-  // --- STATE ---
-  const [mounted, setMounted] = useState(false)
   const [booting, setBooting] = useState(true)
   const [logs, setLogs] = useState<string[]>([])
   const [systemTime, setSystemTime] = useState('')
   const [navbarVisible, setNavbarVisible] = useState(true)
   const lastScrollY = useRef(0)
-
-  // --- AUDIO REFS ---
-  const bootSound = useRef<HTMLAudioElement | null>(null)
-  const typeSound = useRef<HTMLAudioElement | null>(null)
 
   const sections = [
     { id: 'projects', label: 'Projects' },
@@ -27,30 +20,8 @@ export default function DashboardPage() {
     { id: 'contact', label: 'Contact' }
   ]
 
-  // 1. Logika Booting & SSR Hydration
+  // 1. Logika Booting
   useEffect(() => {
-    setMounted(true)
-    
-    // Inisialisasi Audio (Pastikan file ada di /public/sounds/)
-    bootSound.current = new Audio('/sounds/startup.mp3')
-    typeSound.current = new Audio('/sounds/type_blip.mp3')
-    if (typeSound.current) typeSound.current.volume = 0.2
-
-    // Cek Referrer: Hanya booting jika datang dari "/"
-    // document.referrer memberikan URL halaman sebelumnya
-    const referrer = document.referrer
-    const isFromHome = referrer.endsWith('/') || referrer === '' 
-
-    if (!isFromHome) {
-      setBooting(false)
-      return
-    }
-
-    // Play Startup Sound
-    if (bootSound.current) {
-      bootSound.current.play().catch(() => console.log("Audio play blocked by browser. Interaction required."))
-    }
-
     const bootLogs = [
       "INITIALIZING DAFFA.OS KERNEL v5.0.2...",
       "MOUNTING REPOSITORIES FROM CLOUD_DATABASE...",
@@ -64,13 +35,6 @@ export default function DashboardPage() {
     const interval = setInterval(() => {
       if (currentLog < bootLogs.length) {
         setLogs(prev => [...prev, bootLogs[currentLog]])
-        
-        // Play Typing Sound per Log
-        if (typeSound.current) {
-          typeSound.current.currentTime = 0
-          typeSound.current.play().catch(() => {})
-        }
-        
         currentLog++
       } else {
         clearInterval(interval)
@@ -81,17 +45,28 @@ export default function DashboardPage() {
     return () => clearInterval(interval)
   }, [])
 
-  // Menangani Scroll Lock & Posisi Scroll setelah Booting
   useEffect(() => {
-    if (booting && mounted) {
+    if (!booting) {
+      window.scrollTo(0, 0);
+      document.documentElement.classList.remove('lenis-stopped');
+    }
+  }, [booting]);
+
+  // 1.1 Hide scrollbar during booting
+  useEffect(() => {
+    if (booting) {
       document.documentElement.style.overflow = 'hidden'
       document.body.style.overflow = 'hidden'
     } else {
       document.documentElement.style.overflow = ''
       document.body.style.overflow = ''
-      if (mounted) window.scrollTo(0, 0)
     }
-  }, [booting, mounted]);
+
+    return () => {
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
+    }
+  }, [booting])
 
   // 2. Real-time Clock
   useEffect(() => {
@@ -101,12 +76,16 @@ export default function DashboardPage() {
     return () => clearInterval(timer)
   }, [])
 
-  // 3. Navbar Auto-hide
+  // 3. Navbar Auto-hide & Scroll Progress
   useEffect(() => {
     if (booting) return
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY
+      const windowHeight = window.innerHeight
+      const documentHeight = document.documentElement.scrollHeight
+
+      // Auto-hide navbar
       if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
         setNavbarVisible(false)
       } else {
@@ -127,14 +106,11 @@ export default function DashboardPage() {
     }
   }
 
-  // SSR Safe check: Jangan render UI sebelum mounted untuk menghindari mismatch
-  if (!mounted) return <div className="min-h-screen bg-black" />
-
   return (
     <main className="min-h-screen bg-[#050505] text-white font-mono overflow-x-hidden selection:bg-blue-500/30">
       <AnimatePresence mode="wait">
         {booting ? (
-          /* FASE 1: BOOTING SEQUENCE */
+          /* FASE 1: BOOTING SEQUENCE (Sesuai kode kamu) */
           <motion.div 
             key="boot"
             exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
@@ -159,14 +135,14 @@ export default function DashboardPage() {
             </div>
           </motion.div>
         ) : (
-          /* FASE 2: DASHBOARD */
+          /* FASE 2: DASHBOARD (Lusion Style Interface) */
           <motion.div 
             key="dashboard"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="relative"
           >
-            {/* NAVBAR */}
+            {/* NAVBAR: Advanced Header dengan Navigation */}
             <motion.nav 
               initial={{ y: -100 }}
               animate={{ y: navbarVisible ? 0 : -100 }}
@@ -174,6 +150,7 @@ export default function DashboardPage() {
               className="fixed top-0 w-full z-[100] backdrop-blur-xl bg-[#050505]/80 border-b border-white/5"
             >
               <div className="max-w-[2000px] mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
+                {/* Logo & Status */}
                 <motion.div 
                   className="flex items-center gap-8"
                   whileHover={{ scale: 1.02 }}
@@ -185,13 +162,10 @@ export default function DashboardPage() {
                     >
                       DAFFA.OS
                     </h1>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                      <p className="text-[8px] text-white/40 uppercase tracking-widest">System_Active</p>
-                    </div>
                   </div>
                 </motion.div>
 
+                {/* Navigation Menu */}
                 <div className="hidden md:flex items-center gap-8">
                   <motion.button
                     onClick={() => router.push('/')}
@@ -200,9 +174,11 @@ export default function DashboardPage() {
                     transition={{ duration: 0.2 }}
                   >
                     <span className="relative z-10">← Home</span>
-                    <motion.div className="absolute -bottom-1 left-0 w-0 h-[1px] bg-blue-500 group-hover:w-full transition-all duration-300" />
+                    <motion.div 
+                      className="absolute -bottom-1 left-0 w-0 h-[1px] bg-blue-500 group-hover:w-full transition-all duration-300"
+                    />
                   </motion.button>
-                  {sections.map((section) => (
+                  {sections.map((section, idx) => (
                     <motion.button
                       key={section.id}
                       onClick={() => scrollToSection(section.id)}
@@ -218,11 +194,13 @@ export default function DashboardPage() {
                   ))}
                 </div>
 
+                {/* System Info */}
                 <div className="hidden lg:flex flex-col items-end text-[8px] text-white/30 uppercase tracking-wider">
                   <p>TIME: {systemTime}</p>
                   <p className="text-green-500">STATUS: ONLINE</p>
                 </div>
 
+                {/* Mobile Menu Button */}
                 <motion.button 
                   className="md:hidden text-white/60 hover:text-white transition-colors"
                   whileTap={{ scale: 0.95 }}
@@ -234,11 +212,12 @@ export default function DashboardPage() {
               </div>
             </motion.nav>
 
-            {/* CONTENT SECTIONS */}
+            {/* SECTION 1: FEATURED WORKS */}
             <div id="projects">
               <ProjectShowcase />
             </div>
 
+            {/* SECTION 2: EXPERTISE */}
             <div id="expertise" className="relative">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -251,11 +230,17 @@ export default function DashboardPage() {
               </motion.div>
             </div>
 
-            <section id="contact" className="min-h-screen w-full flex flex-col items-center justify-center p-10 md:p-24 relative">
+            {/* SECTION 3: CONTACT */}
+            <section 
+              id="contact" 
+              className="min-h-screen w-full flex flex-col items-center justify-center p-10 md:p-24 relative"
+            >
+               {/* Background Grid Pattern */}
                <div className="absolute inset-0 opacity-10">
                  <div className="fui-grid w-full h-full" />
                </div>
 
+               {/* Background Typography */}
                <motion.h2 
                  initial={{ opacity: 0, scale: 0.8 }}
                  whileInView={{ opacity: 0.02, scale: 1 }}
@@ -263,7 +248,7 @@ export default function DashboardPage() {
                  transition={{ duration: 1 }}
                  className="absolute text-[18vw] font-black uppercase text-white select-none pointer-events-none italic"
                >
-                 Connect
+                Connect
                </motion.h2>
                
                <motion.div 
@@ -296,7 +281,13 @@ export default function DashboardPage() {
                     />
                   </motion.a>
                   
-                  <motion.div className="mt-16 md:mt-24 flex flex-wrap gap-6 md:gap-12 justify-center text-[10px] uppercase tracking-[0.4em]">
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6 }}
+                    className="mt-16 md:mt-24 flex flex-wrap gap-6 md:gap-12 justify-center text-[10px] uppercase tracking-[0.4em]"
+                  >
                     {[
                       { label: 'GitHub', href: 'https://github.com' },
                       { label: 'LinkedIn', href: 'https://linkedin.com' },
@@ -316,8 +307,21 @@ export default function DashboardPage() {
                       </motion.a>
                     ))}
                   </motion.div>
+
+                  {/* Additional Info */}
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 0.4 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.8 }}
+                    className="mt-16 text-white/40 text-sm max-w-2xl mx-auto leading-relaxed"
+                  >
+                    <p>Available for freelance projects, collaborations, and full-time opportunities.</p>
+                    <p className="mt-2">Based in Indonesia • Working Globally</p>
+                  </motion.div>
                </motion.div>
 
+               {/* Footer */}
                <motion.footer 
                  initial={{ opacity: 0 }}
                  whileInView={{ opacity: 0.1 }}
