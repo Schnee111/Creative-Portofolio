@@ -1,67 +1,92 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { projects } from '@/config/projects'
 
 export default function ProjectShowcase() {
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
+
+  // Konfigurasi Tween yang sangat cepat dan sinkron
+  const techTween = {
+    type: "tween",
+    duration: 0.25, // Dipercepat dari 0.35s
+    ease: [0.23, 1, 0.32, 1] 
+  } as const
+
   return (
     <div className="relative bg-[#050505] selection:bg-blue-500/30">
-      
-      {/* LIST VIEW - NAVIGASI UTAMA */}
-      <section className="min-h-screen flex flex-col justify-center p-10 md:p-24 pt-8 md:pt-32">
+      <section className="min-h-screen flex flex-col justify-center p-8 md:p-24 pt-20 pb-48 md:pt-32 md:pb-64">
         <motion.span 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 0.4, x: 0 }}
           viewport={{ once: true }}
-          className="text-blue-500 font-mono text-[10px] tracking-[0.6em] mb-12 uppercase font-bold italic font-ibm"
+          className="text-blue-500 font-mono text-[10px] tracking-[0.6em] mb-16 uppercase font-bold italic"
         >
           // Featured_Archives
         </motion.span>
 
-        <div className="space-y-4 md:space-y-6">
-          {projects.map((project, idx) => (
-            <motion.div
+        <div className="space-y-12 md:space-y-16">
+          {projects.map((project) => (
+            <div
               key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-10%" }}
-              // ANIMASI HOVER: Geser kanan + sedikit bounce
-              whileHover={{ x: 25 }} 
-              // Konfigurasi 'spring' untuk efek memantul yang halus
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-              className="relative"
+              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              className="relative flex items-center"
             >
               <Link 
                 href={`/project/${project.id}`} 
-                className="group cursor-pointer block w-fit"
+                className="group cursor-pointer block relative z-10"
               >
-                {/* Judul Proyek */}
-                <h2 className="text-[9vw] font-display font-black uppercase tracking-tighter italic leading-[0.85] text-white/10 group-hover:text-blue-500 transition-colors duration-300 will-change-transform">
-                  {project.title}
-                </h2>
-
-                {/* Indikator Samping (Muncul saat hover) */}
-                <motion.div 
-                  initial={{ opacity: 0, x: -10 }}
-                  whileHover={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute top-1/2 left-full ml-10 -translate-y-1/2 hidden md:block whitespace-nowrap pointer-events-none"
+                <motion.h2 
+                  animate={{ 
+                    x: hoveredId === project.id ? 20 : 0,
+                    color: hoveredId === project.id ? '#3b82f6' : 'rgba(255,255,255,0.05)' 
+                  }}
+                  transition={techTween}
+                  className="text-4xl md:text-[6vw] font-display font-black uppercase tracking-tighter italic leading-[0.85] md:text-white/5"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="h-[1px] w-12 bg-blue-500" />
-                    <span className="text-blue-500 font-mono text-[10px] font-bold tracking-widest uppercase font-ibm">
-                      {project.subtitle} — Initialize_Node
-                    </span>
-                  </div>
-                </motion.div>
+                  {project.title.split(' ')[0]} <br />
+                  
+                  <span 
+                    className="transition-all duration-0"
+                    style={{ 
+                      WebkitTextStroke: hoveredId === project.id ? '0px transparent' : '1px rgba(255,255,255,0.1)',
+                      color: hoveredId === project.id ? 'inherit' : 'transparent'
+                    }}
+                  >
+                    {project.title.split(' ').slice(1).join(' ')}
+                  </span>
+                </motion.h2>
 
-                {/* Nomor Urut (Muncul samar saat hover) */}
-                <div className="absolute top-2 -left-10 opacity-0 group-hover:opacity-30 transition-all duration-500 font-mono text-blue-500 text-lg font-black italic pointer-events-none">
+                {/* ID Proyek */}
+                <div className={`absolute -top-4 -left-6 md:-left-12 transition-all duration-300 font-mono text-blue-500 text-sm md:text-lg font-black italic pointer-events-none ${hoveredId === project.id ? 'opacity-40 translate-x-2' : 'opacity-0'}`}>
                   {project.id}
                 </div>
               </Link>
-            </motion.div>
+
+              {/* Indikator Samping */}
+              <AnimatePresence>
+                {hoveredId === project.id && (
+                  <motion.div 
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={techTween}
+                    className="ml-10 md:ml-20 hidden md:flex items-center gap-6 pointer-events-none whitespace-nowrap"
+                  >
+                    <div className="h-[1px] w-16 bg-blue-500 shadow-[0_0_15px_#3b82f6]" />
+                    <div className="flex flex-col">
+                      <span className="text-blue-500 font-mono text-[9px] font-bold tracking-[0.4em] uppercase opacity-40 mb-1">Node_Connected</span>
+                      <span className="text-blue-500 font-mono text-[12px] font-bold tracking-widest uppercase">
+                        {project.subtitle}
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ))}
         </div>
       </section>

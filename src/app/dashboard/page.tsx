@@ -12,7 +12,7 @@
     const [logs, setLogs] = useState<string[]>([])
     const [systemTime, setSystemTime] = useState('')
     const [navbarVisible, setNavbarVisible] = useState(true)
-    const [menuOpen, setMenuOpen] = useState(false) // <--- Tambahkan ini
+    const [menuOpen, setMenuOpen] = useState(false)
     const lastScrollY = useRef(0)
 
     const sections = [
@@ -53,21 +53,36 @@
       }
     }, [booting]);
 
-    // 1.1 Hide scrollbar during booting
+    // 1.1 Hide scrollbar during booting & menu open
     useEffect(() => {
-      if (booting|| menuOpen) {
-        document.documentElement.style.overflow = 'hidden'
-        document.body.style.overflow = 'hidden'
+      const html = document.documentElement;
+      const body = document.body;
+
+      if (booting || menuOpen) {
+        // Kunci scroll secara total
+        html.style.overflow = 'hidden';
+        body.style.overflow = 'hidden';
+        html.classList.add('lenis-stopped'); // Jika pakai smooth scroll Lenis
+        
+        // Opsional: cegah pergeseran layout saat scrollbar hilang
+        body.style.touchAction = 'none'; 
+        body.style.overscrollBehavior = 'none';
       } else {
-        document.documentElement.style.overflow = ''
-        document.body.style.overflow = ''
+        // Kembalikan scroll
+        html.style.overflow = '';
+        body.style.overflow = '';
+        html.classList.remove('lenis-stopped');
+        
+        body.style.touchAction = '';
+        body.style.overscrollBehavior = '';
       }
 
       return () => {
-        document.documentElement.style.overflow = ''
-        document.body.style.overflow = ''
-      }
-    }, [booting, menuOpen])
+        html.style.overflow = '';
+        body.style.overflow = '';
+        html.classList.remove('lenis-stopped');
+      };
+    }, [booting, menuOpen]);
 
     // 2. Real-time Clock
     useEffect(() => {
@@ -101,6 +116,7 @@
 
     // 4. Smooth Scroll to Section
     const scrollToSection = (sectionId: string) => {
+      setMenuOpen(false);
       const element = document.getElementById(sectionId)
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -148,7 +164,9 @@
                 initial={{ y: -100 }}
                 animate={{ y: navbarVisible ? 0 : -100 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="fixed top-0 w-full z-[100] backdrop-blur-xl bg-[#050505]/80 border-b border-white/5"
+                className={`fixed top-0 w-full z-[160] transition-colors duration-500 ${
+                  menuOpen ? 'bg-[#050505]' : 'backdrop-blur-xl bg-[#050505]/80'
+                } border-b border-white/5`}
               >
                 <div className="max-w-[2000px] mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
                   {/* Logo & Status */}
@@ -204,20 +222,24 @@
                   {/* Mobile Menu Button */}
                   <motion.button 
                     onClick={() => setMenuOpen(!menuOpen)}
-                    className="md:hidden relative z-[200] w-8 h-8 flex flex-col items-center justify-center gap-1.5"
+                    // Pastikan z-index di sini (z-[250]) jauh lebih tinggi dari z-index overlay (z-[140])
+                    className="md:hidden relative z-[250] w-10 h-10 flex flex-col items-center justify-center gap-2"
                     whileTap={{ scale: 0.9 }}
                   >
                     <motion.span 
-                      animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                      className="w-6 h-[1px] bg-white block origin-center" 
+                      className="w-6 h-0.5 bg-white block origin-center" 
+                      animate={menuOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
+                      transition={{ duration: 0.3 }}
                     />
                     <motion.span 
-                      animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                      className="w-6 h-[1px] bg-white block" 
+                      className="w-6 h-0.5 bg-white block"
+                      animate={menuOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3 }}
                     />
                     <motion.span 
-                      animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                      className="w-6 h-[1px] bg-white block origin-center" 
+                      className="w-6 h-0.5 bg-white block origin-center"
+                      animate={menuOpen ? { rotate: -45, y: -10 } : { rotate: 0, y: 0 }}
+                      transition={{ duration: 0.3 }}
                     />
                   </motion.button>
                 </div>
@@ -231,7 +253,8 @@
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
                     transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                    className="fixed inset-0 z-[140] bg-[#050505] flex flex-col p-10 justify-center md:hidden"
+                    onPointerMove={(e) => e.stopPropagation()}
+                    className="fixed inset-0 z-[140] bg-[#050505] flex flex-col p-10 justify-center md:hidden h-screen w-screen"
                   >
                     <div className="flex flex-col gap-8">
                       <p className="text-blue-500 text-[10px] tracking-[0.5em] uppercase opacity-50">// Navigation</p>

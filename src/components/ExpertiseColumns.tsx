@@ -46,23 +46,21 @@ export default function ExpertiseColumns() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <div className="h-full w-full flex flex-col md:flex-row overflow-hidden bg-black">
+    <div className="h-full w-full flex overflow-hidden bg-black">
       {expertiseData.map((item, i) => (
         <motion.div
           key={item.id}
           onMouseEnter={() => setHoveredIndex(i)}
           onMouseLeave={() => setHoveredIndex(null)}
           animate={{
-            // Mobile: full width, desktop: dynamic width
-            width: '100%', 
-            height: hoveredIndex === i ? '100%' : '25%', // Default height on mobile
-            // Kita gunakan media query manual atau responsive classes di Tailwind
+            // Pembagian lebar yang lebih ekstrem untuk sensasi premium
+            width: hoveredIndex === i ? '60%' : hoveredIndex === null ? '25%' : '13.33%'
           }}
-          // Overide animate untuk Desktop menggunakan Tailwind breakpoint classes
-          className={`relative border-b md:border-b-0 md:border-r border-white/5 flex flex-col group cursor-pointer overflow-hidden bg-[#050505] transition-all duration-700
-            ${hoveredIndex === i ? 'md:w-[60%]' : hoveredIndex === null ? 'md:w-[25%]' : 'md:w-[13.33%]'}
-            ${hoveredIndex === i ? 'h-full flex-[4]' : 'flex-1'}
-          `}
+          transition={{ 
+            duration: 0.7, 
+            ease: [0.22, 1, 0.36, 1] // Easing Expo yang sangat smooth
+          }}
+          className="relative h-full border-r border-white/5 flex flex-col group cursor-pointer overflow-hidden bg-[#050505]"
         >
           {/* 1. BACKGROUND IMAGE DENGAN REVEAL PARALLAX */}
           <motion.div 
