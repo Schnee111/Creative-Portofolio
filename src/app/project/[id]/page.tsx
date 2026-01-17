@@ -185,7 +185,7 @@ export default function ProjectDetail() {
   return (
     <main ref={mainRef} className="fixed inset-0 h-screen w-screen bg-[#050505] overflow-hidden font-sans">
       
-      {/* 🎭 MULTI-PANEL OVERLAY */}
+      {/* MULTI-PANEL OVERLAY */}
       <div className="fixed inset-0 z-[999] pointer-events-none flex flex-col">
         {[...Array(3)].map((_, i) => (
           <div 
@@ -206,7 +206,7 @@ export default function ProjectDetail() {
         ))}
       </div>
 
-      {/* 📦 CONTENT WRAPPER */}
+      {/* CONTENT WRAPPER */}
       <div ref={contentRef} className="h-full w-full">
         <nav className="fixed top-0 w-full p-8 md:p-12 flex justify-between items-center z-[350] pointer-events-none font-mono">
           <div className="flex flex-col gap-1">
@@ -214,7 +214,7 @@ export default function ProjectDetail() {
             <div className="h-[1px] w-12 bg-blue-500/30" />
           </div>
           <Link href="/dashboard" className="pointer-events-auto text-white/30 hover:text-white text-[9px] tracking-widest uppercase border border-white/5 px-6 py-2 rounded-full backdrop-blur-md bg-white/[0.02] transition-all">
-            [ EXIT_NODE ]
+            [ EXIT ]
           </Link>
         </nav>
 
@@ -226,7 +226,7 @@ export default function ProjectDetail() {
             {/* HERO */}
             <section className="w-screen h-full flex flex-col justify-center p-12 md:p-32 flex-shrink-0 relative border-r border-white/5">
               <div className="absolute inset-0 opacity-20">
-                <img src={currentProject.mainImage} className="w-full h-full object-cover blur-3xl" alt="" />
+                <img src={currentProject.mainImage} className="w-full h-full object-cover opacity-80 blur-[2px]" alt="" />
               </div>
               <div className="relative z-10 max-w-5xl">
                 <span className="text-blue-500 font-mono text-[11px] tracking-[0.8em] block uppercase mb-8 font-black">{currentProject.subtitle}</span>
@@ -257,13 +257,13 @@ export default function ProjectDetail() {
 
             {/* BRIDGE */}
             {nextProject && (
-              <section className="w-[60vw] h-full flex items-center justify-center flex-shrink-0 relative overflow-hidden bg-[#0a0a0a] group border-l border-white/5">
-                <div className="absolute inset-0 z-0 opacity-20 grayscale group-hover:grayscale-0 transition-all duration-1000">
-                  <img src={nextProject.mainImage} className="w-full h-full object-cover" alt="" />
+              <section className="w-[40vw] h-full flex items-center justify-center flex-shrink-0 relative overflow-hidden bg-[#0a0a0a] group border-l border-white/5">
+                <div className="absolute inset-0 z-0 opacity-20 transition-all duration-1000">
+                  <img src={nextProject.mainImage} className="w-full h-full object-cover opacity-40 blur-[2px]" alt="" />
                 </div>
                 <div className="relative z-10 text-center">
                   <p className="text-blue-500 font-mono text-[10px] uppercase tracking-[1em] mb-12 italic font-black animate-pulse">Next_Archive</p>
-                  <h2 className="text-4xl md:text-6xl font-display font-black uppercase italic text-white/20 group-hover:text-white transition-all duration-700 leading-none tracking-tighter mb-16">{nextProject.title}</h2>
+                  <h2 className="text-4xl md:text-6xl font-display font-black uppercase italic text-white transition-all duration-700 leading-none tracking-tighter mb-16">{nextProject.title}</h2>
                   <div className="flex flex-col items-center gap-6">
                     <div className="w-48 h-[2px] bg-white/10 relative overflow-hidden">
                       <motion.div style={{ width: `${switchProgress}%` }} className="h-full bg-blue-500 shadow-[0_0_20px_#3b82f6]" />
