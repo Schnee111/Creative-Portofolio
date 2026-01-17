@@ -100,6 +100,7 @@ html, body {
   color: var(--foreground);
   @apply font-sans;
   overflow-x: hidden;
+  height: -webkit-fill-available;
 }
 
 /* 1.1 CUSTOM SCROLL INDICATOR (Lusion Style - Inset Position) */
@@ -172,6 +173,14 @@ html.lenis, html.lenis body {
 
 main {
   min-height: 100vh;
+}
+
+@supports not (height: 100dvh) {
+  main, .h-screen {
+    min-height: 100vh;
+    /* Variabel ini akan dihitung via JS di ClientLayout */
+    height: calc(var(--vh, 1vh) * 100);
+  }
 }
 
 /* CUSTOM CURSOR ======= */

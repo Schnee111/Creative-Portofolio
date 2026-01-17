@@ -37,7 +37,7 @@ export default function ProjectShowcase() {
                 className="group cursor-pointer block w-fit"
               >
                 {/* Judul Proyek */}
-                <h2 className="text-[9vw] font-display font-black uppercase tracking-tighter italic leading-[0.85] text-white/5 group-hover:text-blue-500 transition-colors duration-300 will-change-transform">
+                <h2 className="text-[9vw] font-display font-black uppercase tracking-tighter italic leading-[0.85] text-white/10 group-hover:text-blue-500 transition-colors duration-300 will-change-transform">
                   {project.title}
                 </h2>
 

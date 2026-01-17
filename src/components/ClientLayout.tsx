@@ -20,6 +20,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     window.dispatchEvent(new Event('start-site-intro'))
   }
 
+  useEffect(() => {
+    const setVh = () => {
+      // Menghitung 1% dari window.innerHeight
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVh();
+    window.addEventListener('resize', setVh);
+    return () => window.removeEventListener('resize', setVh);
+  }, []);
+
   // Hide scrollbar during page transition to dashboard
   useEffect(() => {
     if (pathname === '/dashboard') {
