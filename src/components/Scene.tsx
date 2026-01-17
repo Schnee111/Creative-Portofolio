@@ -79,7 +79,7 @@ function CameraHandler() {
         start: "top top",
         end: "bottom bottom",
         scrub: 1.0, 
-        onLeave: () => { router.push('/home') }
+        onLeave: () => { router.push('/dashboard') }
       }
     })
 
@@ -134,7 +134,7 @@ export default function Scene() {
             <Environment preset="night" blur={0.6} environmentIntensity={1} />
         </Canvas>
       </div>
-      {DEBUG_MODE && <div className="fixed top-0 left-0 bg-red-600 text-white p-2 z-50 font-bold">🛠 DEBUG MODE ON</div>}
+      {DEBUG_MODE && <div className="fixed top-0 left-0 bg-red-600 text-white p-2 z-50 font-bold">DEBUG MODE ON</div>}
     </>
   )
 }
