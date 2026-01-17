@@ -184,6 +184,8 @@ export default function Scene() {
               scale={10} 
               blur={2.5} 
               far={4} 
+              resolution={256}
+              frames={1}
             />
 
             {/* 5. POST PROCESSING: Final Polish */}
