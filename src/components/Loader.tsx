@@ -39,7 +39,7 @@ export default function Loader({ onFinished }: LoaderProps) {
               <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
-                className="text-white font-black text-6xl md:text-8xl tracking-tighter block tabular-nums"
+                className="text-white font-black px-1 text-6xl md:text-8xl tracking-tighter block tabular-nums"
               >
                 {Math.round(progress)}%
               </motion.span>
