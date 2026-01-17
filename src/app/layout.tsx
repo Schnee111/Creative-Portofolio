@@ -23,8 +23,44 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'DAFFA | Portfolio',
-  description: 'Immersive Creative Developer Experience',
+  // metadataBase: new URL('https://domain-anda.com'), // Penting untuk path gambar absolut
+  title: {
+    default: 'Muhammad Daffa Maarif | Portfolio',
+    template: '%s | Muhammad Daffa Maarif',
+  },
+  description: 'Immersive Creative Developer Experience focusing on modern web technologies.',
+  openGraph: {
+    title: 'Muhammad Daffa Maarif | Portfolio',
+    description: 'Explore the creative work and technical expertise of Muhammad Daffa Maarif.',
+    url: './',
+    siteName: 'Muhammad Daffa Maarif Portfolio',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'id_ID',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Muhammad Daffa Maarif | Portfolio',
+    description: 'Explore the creative work and technical expertise of Muhammad Daffa Maarif.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
