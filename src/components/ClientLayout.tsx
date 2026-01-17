@@ -1,15 +1,17 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Scene from './Scene'
 import SmoothScroll from './SmoothScroll'
 import Loader from './Loader'
+import CustomCursor from './CustomCursor'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
+  const [showScrollbar, setShowScrollbar] = useState(true)
   
   // Only show Scene and Loader on homepage
   const isHomepage = pathname === '/'
@@ -17,6 +19,24 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const handleLoaderFinished = () => {
     window.dispatchEvent(new Event('start-site-intro'))
   }
+
+  // Hide scrollbar during page transition to dashboard
+  useEffect(() => {
+    if (pathname === '/dashboard') {
+      // Hide scrollbar immediately on dashboard navigation
+      setShowScrollbar(false)
+      
+      // Show scrollbar after booting animation (approx 2 seconds)
+      const timer = setTimeout(() => {
+        setShowScrollbar(true)
+      }, 2000)
+      
+      return () => clearTimeout(timer)
+    } else {
+      // Show immediately on other pages
+      setShowScrollbar(true)
+    }
+  }, [pathname])
 
   // Custom scroll indicator (Lusion style)
   useEffect(() => {
@@ -43,11 +63,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       // Show indicator
       indicator.classList.add('visible')
 
-      // Hide after 1 second
+      // Hide after 0.2 second
       clearTimeout(scrollTimeout)
       scrollTimeout = setTimeout(() => {
         indicator.classList.remove('visible')
-      }, 1000)
+      }, 200)
     }
 
     window.addEventListener('scroll', updateScrollIndicator, { passive: true })
@@ -77,12 +97,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       <main className="relative z-10 bg-transparent">
         <SmoothScroll>
+          <CustomCursor />
           {children}
         </SmoothScroll>
       </main>
 
-      {/* Custom Scroll Indicator */}
-      <div ref={scrollIndicatorRef} className="scroll-indicator">
+      {/* Custom Scroll Indicator - Hide during dashboard booting */}
+      <div 
+        ref={scrollIndicatorRef} 
+        className="scroll-indicator"
+        style={{ display: showScrollbar ? 'block' : 'none' }}
+      >
         <div ref={thumbRef} className="scroll-indicator-thumb" />
       </div>
     </>
