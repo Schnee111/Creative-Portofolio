@@ -54,9 +54,9 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
         <mesh geometry={nodes.Object_6.geometry} material={materials.BG_Dark} />
         <mesh geometry={nodes.Object_7.geometry} material={materials.Carpet} />
         <mesh geometry={nodes.Object_8.geometry} material={materials.Emission} />
-        <mesh geometry={nodes.Object_9.geometry} material={materials.Emission_Blue} />
+        {/* <mesh geometry={nodes.Object_9.geometry} material={materials.Emission_Blue} /> */}
         <mesh geometry={nodes.Object_10.geometry} material={materials.Foam_Acoustic} />
-        <mesh geometry={nodes.Object_11.geometry} material={materials.Foam_Acoustic} />
+        {/* <mesh geometry={nodes.Object_11.geometry} material={materials.Foam_Acoustic} /> */}
 
         {/* === MONITOR SCREEN (Object_13) === */}
         <mesh geometry={nodes.Object_13.geometry} material={materials.Monitor_Single} />
@@ -178,10 +178,7 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
               </div>
             </div>
           </Html>
-        </mesh>
 
-        {/* === LAYAR UTAMA (HORIZONTAL) === */}
-        <mesh geometry={nodes.Object_13.geometry} material={materials.Monitor_Single}>
           <Html
             transform
             wrapperClass="htmlScreen"
@@ -266,6 +263,7 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
             </div>
           </Html>
         </mesh>
+
       </group>
     </group>
   )

@@ -1,15 +1,16 @@
 'use client'
 
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Environment, OrbitControls, ContactShadows } from '@react-three/drei'
+import { Environment, OrbitControls, ContactShadows, PerformanceMonitor } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise, Vignette, ChromaticAberration } from '@react-three/postprocessing'
 import { ModelRoom } from './Room'
-import { useRef, useLayoutEffect, useEffect } from 'react'
+import { useRef, useLayoutEffect, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import * as THREE from 'three'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useRouter } from 'next/navigation'
 import { useControls, button } from 'leva'
+import { Perf } from 'r3f-perf'
 
 const DEBUG_MODE = false; 
 
@@ -98,11 +99,9 @@ function CameraHandler() {
     const progress = tl.current ? tl.current.progress() : 0
     const parallaxStrength = Math.max(0, 1 - (progress * 1.25))
 
-    // Sangat smooth (0.02)
     smoothMouse.current.x = THREE.MathUtils.lerp(smoothMouse.current.x, mouse.current.x, 0.02)
     smoothMouse.current.y = THREE.MathUtils.lerp(smoothMouse.current.y, mouse.current.y, 0.02)
 
-    // Jangkauan Luas (1.5)
     const lookX = baseLookAt.current.x + (smoothMouse.current.x * 1 * parallaxStrength)
     const lookY = baseLookAt.current.y + (smoothMouse.current.y * 0.7 * parallaxStrength)
 
@@ -113,59 +112,68 @@ function CameraHandler() {
 }
 
 export default function Scene() {
+  // Hanya simpan state qualityTier
+  // 0 = Low (No Effects), 1 = Medium (Light), 2 = High (Full)
+  const [qualityTier, setQualityTier] = useState(2)
+
   return (
     <>
       <div className="fixed inset-0 z-0 bg-[#050505]">
         <Canvas
             camera={{ position: [0, 0, 0], fov: 45, near: 0.01 }}
             style={{ pointerEvents: DEBUG_MODE ? 'auto' : 'none' }} 
-            shadows // Aktifkan sistem bayangan
-            
-            // === OPTIMASI CANVAS ===
-            dpr={[1, 1.5]} 
+            shadows
+            // Mengatur resolusi dinamis berdasarkan tier
+            dpr={[1, qualityTier === 2 ? 1.5 : 1.1]}
             gl={{ 
               antialias: false, 
               powerPreference: "high-performance", 
               stencil: false, 
               depth: true,
-              toneMapping: THREE.ACESFilmicToneMapping, // Tone mapping filmis
-              toneMappingExposure: 0.9 // Sedikit lebih gelap untuk mood
+              toneMapping: THREE.ACESFilmicToneMapping, 
+              toneMappingExposure: 0.9 
             }}
-            // ========================
         >
-            {/* 1. ATMOSPHERE: Kabut halus untuk menyatukan ruang & background */}
+            <PerformanceMonitor 
+              onDecline={() => setQualityTier(prev => Math.max(0, prev - 1))}
+              onIncline={() => setQualityTier(prev => Math.min(2, prev + 1))}
+              flipflops={3}
+            />
+
+            {/* <Perf position="top-left" /> */}
+
             <color attach="background" args={['#050505']} />
             <fog attach="fog" args={['#050505', 5, 20]} /> 
 
-            {/* 2. LIGHTING SETUP: Cinematic "Teal & Orange" Vibe */}
-            
-            {/* Ambient Light: Sangat redup, hanya agar hitam tidak mati total */}
+            {/* LIGHTING SETUP */}
             <ambientLight intensity={0.2} color="#1a2035" /> 
 
-            {/* Key Light: Cahaya utama (Hangat/Amber) - Fokus ke meja */}
             <spotLight 
-              position={[5, 8, 5]} 
+              position={[3, 0, 2]} 
               angle={0.5} 
               penumbra={1} 
               intensity={20} 
-              color="#ffaa77" // Warna hangat lampu meja
+              color="#ffaa77" 
               castShadow 
-              shadow-bias={-0.0001}
+              // Set shadow bias via ref callback
+              ref={light => {
+                if (light) {
+                  light.shadow.bias = -0.0001;
+                }
+              }}
             />
 
-            {/* Fill Light: Cahaya pengisi (Dingin/Biru) - Dari sisi berlawanan */}
-            <pointLight 
-              position={[-5, 5, -5]} 
-              intensity={5} 
-              color="#4c6ef5" // Biru cyber
-            />
+            {/* <pointLight 
+              position={[-3, 0, -2]} 
+              intensity={2} 
+              color="#4c6ef5" 
+            /> */}
 
-            {/* Screen Glow Simulation: Cahaya dari area monitor */}
             <pointLight 
-              position={[-0.3, 0.2, 0.4]} 
+              position={[-0.2, 0.3, 0.6]} 
               distance={3}
-              intensity={1.5} 
-              color="#00ffff" // Cyan screen glow
+              intensity={1} 
+              color="#00ffff" 
             />
 
             {DEBUG_MODE ? <Debugger /> : <CameraHandler />}
@@ -174,12 +182,10 @@ export default function Scene() {
                 <ModelRoom />
             </group>
 
-            {/* 3. REFLECTIONS: City preset lebih detail untuk logam/kaca */}
             <Environment preset="city" environmentIntensity={0.5} blur={0.8} />
 
-            {/* 4. GROUND SHADOWS: Bayangan kontak di lantai agar tidak melayang */}
             <ContactShadows 
-              position={[0, -0.01, 0]} // Tepat di bawah lantai
+              position={[0, -0.3, 0]}
               opacity={0.6} 
               scale={10} 
               blur={2.5} 
@@ -188,32 +194,30 @@ export default function Scene() {
               frames={1}
             />
 
-            {/* 5. POST PROCESSING: Final Polish */}
-            <EffectComposer multisampling={0} enableNormalPass={false}>
-              {/* Bloom: Membuat layar monitor & neon berpendar indah */}
-              <Bloom 
-                luminanceThreshold={1} // Hanya bagian sangat terang yang glowing
-                mipmapBlur 
-                intensity={1.2} 
-                radius={0.5} 
-              />
-              
-              {/* Noise: Memberi tekstur "film grain" agar tidak terlalu plastik */}
-              <Noise opacity={0.02} />
-              
-              {/* Vignette: Fokuskan mata ke tengah layar */}
-              <Vignette eskil={false} offset={0.1} darkness={0.9} />
-              
-              {/* Chromatic Aberration: Efek lensa kamera (sedikit saja di pinggir) */}
-              <ChromaticAberration 
-                offset={[0.001, 0.001]} // Pergeseran RGB sangat halus
-                radialModulation={false}
-                modulationOffset={0}
-              />
-            </EffectComposer>
+            {/* POST PROCESSING */}
+            {qualityTier > 0 && (
+              <EffectComposer 
+                  enableNormalPass={false} 
+                  multisampling={0}
+                  resolutionScale={qualityTier === 2 ? 1 : 0.5} 
+              >
+                  <Bloom 
+                      luminanceThreshold={1} 
+                      mipmapBlur 
+                      intensity={qualityTier === 2 ? 1.4 : 0.8} 
+                      radius={qualityTier === 2 ? 0.5 : 0.3} 
+                  />
+                  
+                  {qualityTier === 2 ? <Noise opacity={0.03} /> : (null as any)}
+                  
+                  <Vignette eskil={false} offset={0.1} darkness={0.9} />
+                  {/* <ChromaticAberration offset={[0.001, 0.001]} radialModulation={false} modulationOffset={0} /> */}
+
+              </EffectComposer>
+            )}
         </Canvas>
+      
       </div>
-      {DEBUG_MODE && <div className="fixed top-0 left-0 bg-red-600 text-white p-2 z-50 font-bold">DEBUG MODE ON</div>}
     </>
   )
 }
