@@ -21,7 +21,7 @@ export default function Home() {
         start: "top top",
         end: "bottom bottom",
         snap: {
-          snapTo: [0, 0.40, 0.60, 0.90],
+          snapTo: [0, 0.40, 0.60],
           duration: { min: 0.4, max: 0.8 },
           ease: "power2.out"
         }
