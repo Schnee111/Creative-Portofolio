@@ -26,11 +26,11 @@ export const projects: Project[] = [
     subtitle: 'COMPUTER VISION',
     tech: 'YOLOv8 / ByteTrack / Python',
     desc: 'An AI-driven infrastructure monitoring system designed to identify asphalt defects and potholes in real-time with mAP 92% accuracy.',
-    mainImage: 'https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&q=80&w=2000',
+    mainImage: 'https://plus.unsplash.com/premium_photo-1664547606209-fb31ec979c85?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     gallery: [
-      { url: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&q=80&w=2000', type: 'full' },
-      { url: 'https://images.unsplash.com/photo-1541696490-8744a5db7f34?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
-      { url: 'https://images.unsplash.com/photo-1584462224748-41cc5aa51a7b?auto=format&fit=crop&q=80&w=2000', type: 'card' }
+      { url: 'https://images.unsplash.com/photo-1621243804936-775306a8f2e3?auto=format&fit=crop&q=80&w=2000', type: 'full' },
+      { url: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
+      { url: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=2000', type: 'card' }
     ],
     sections: [
       { title: 'The Problem', content: 'Manual road inspections are labor-intensive, costly, and often overlook critical safety hazards in urban environments.' },
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     subtitle: 'FINTECH / AI',
     tech: 'XGBoost / Scikit-learn / FastAPI',
     desc: 'A high-performance fraud detection engine analyzing transaction patterns to mitigate financial risks through behavioral AI.',
-    mainImage: 'https://images.unsplash.com/photo-1563013544-824ae1d95710?auto=format&fit=crop&q=80&w=2000',
+    mainImage: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2000',
     gallery: [
       { url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2000', type: 'full' },
       { url: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
@@ -77,11 +77,12 @@ export const projects: Project[] = [
     subtitle: 'NLP / DEEP LEARNING',
     tech: 'PyTorch / Transformers / Flask',
     desc: 'A pure Transformer-based conversational AI designed for natural language understanding and multi-turn dialogue coherence.',
-    mainImage: 'https://images.unsplash.com/photo-1675557009875-436f09789f50?auto=format&fit=crop&q=80&w=2000',
+    // GAMBAR UTAMA BARU (STABIL)
+    mainImage: 'https://images.unsplash.com/photo-1674027444485-cec3da58eef4?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     gallery: [
-      { url: 'https://images.unsplash.com/photo-1531746790731-6c087fecd05a?auto=format&fit=crop&q=80&w=2000', type: 'full' },
-      { url: 'https://images.unsplash.com/photo-1555255707-c07966488bd7?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
-      { url: 'https://images.unsplash.com/photo-1527430253228-e9032488bc58?auto=format&fit=crop&q=80&w=2000', type: 'card' }
+      { url: 'https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&q=80&w=2000', type: 'full' },
+      { url: 'https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
+      { url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000', type: 'card' }
     ],
     sections: [
       { title: 'Attention Mechanism', content: 'Implementing multi-head self-attention to capture long-range linguistic dependencies across complex user queries.' },
@@ -94,11 +95,24 @@ export const projects: Project[] = [
     subtitle: 'BIG DATA / MINING',
     tech: 'Orange / Python / NLTK',
     desc: 'A systematic analysis of digital banking user reviews to categorize customer sentiment and identify key pain points.',
-    mainImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2000',
+    // GAMBAR UTAMA BARU (STABIL & MODERN)
+    mainImage: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&q=80&w=2000',
     gallery: [
-      { url: 'https://images.unsplash.com/photo-1504868584819-f8e90526354c?auto=format&fit=crop&q=80&w=2000', type: 'full' },
-      { url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
-      { url: 'https://images.unsplash.com/photo-1454165833767-02a6e3066b61?auto=format&fit=crop&q=80&w=2000', type: 'card' }
+      { 
+        // Gambar 1 (Full): Visual modern workspace & dashboard data
+        url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=2000', 
+        type: 'full' 
+      },
+      { 
+        // PENGGANTI GAMBAR 2 (TALL): Visual sirkuit & data stream yang stabil
+        url: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000', 
+        type: 'tall' 
+      },
+      { 
+        // Gambar 3 (Card): Grafik Pertumbuhan & Sentimen
+        url: 'https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&q=80&w=2000', 
+        type: 'card' 
+      }
     ],
     sections: [
       { title: 'Customer Insights', content: 'Mapping high-frequency complaints to specific app features using automated K-Means clustering.' },
@@ -111,11 +125,23 @@ export const projects: Project[] = [
     subtitle: 'BIOMETRICS',
     tech: 'CNN / OpenCV / React',
     desc: 'An advanced biometric security system utilizing hand-palm vein patterns for secure, contactless financial authentication.',
-    mainImage: 'https://images.unsplash.com/photo-1507146153580-69a1fe6d8aa1?auto=format&fit=crop&q=80&w=2000',
+    mainImage: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80&w=2000',
     gallery: [
-      { url: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80&w=2000', type: 'full' },
-      { url: 'https://images.unsplash.com/photo-1633265485768-30698f1d11bc?auto=format&fit=crop&q=80&w=2000', type: 'tall' },
-      { url: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&q=80&w=2000', type: 'card' }
+      { 
+        // Gambar 1 (Full): Visual keamanan siber dan perlindungan data
+        url: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&q=80&w=2000', 
+        type: 'full' 
+      },
+      { 
+        // Gambar 2 (Tall): Detail sirkuit hardware autentikasi
+        url: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&q=80&w=2000', 
+        type: 'tall' 
+      },
+      { 
+        // Gambar 3 (Card): Visualisasi pemindaian biometrik digital
+        url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2000', 
+        type: 'card' 
+      }
     ],
     sections: [
       { title: 'Biometric Mapping', content: 'Extracting palm vein features using infrared imagery to create a non-transferable biological key.' },
