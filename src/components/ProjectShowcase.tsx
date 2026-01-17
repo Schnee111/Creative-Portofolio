@@ -1,93 +1,154 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { projects } from '@/config/projects'
 
 export default function ProjectShowcase() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
+  
+  const requestRef = useRef<number | null>(null)
 
-  // Konfigurasi Tween yang sangat cepat dan sinkron
-  const techTween = {
-    type: "tween",
-    duration: 0.25, // Dipercepat dari 0.35s
-    ease: [0.23, 1, 0.32, 1] 
-  } as const
+  // --- MOUSE TRACKING (Untuk Gambar Background) ---
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const x = e.clientX
+    const y = e.clientY
+    
+    if (requestRef.current) cancelAnimationFrame(requestRef.current)
+    requestRef.current = requestAnimationFrame(() => {
+      setCursorPos({ x, y })
+    })
+  }
+
+  const activeProject = projects.find(p => p.id === hoveredId)
 
   return (
-    <div className="relative bg-[#050505] selection:bg-blue-500/30">
-      <section className="min-h-screen flex flex-col justify-center p-8 md:p-24 pt-20 pb-48 md:pt-32 md:pb-64">
-        <motion.span 
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 0.4, x: 0 }}
-          viewport={{ once: true }}
-          className="text-blue-500 font-mono text-[10px] tracking-[0.6em] mb-16 uppercase font-bold italic"
-        >
-          // Featured_Archives
-        </motion.span>
-
-        <div className="space-y-12 md:space-y-16">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              onMouseEnter={() => setHoveredId(project.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              className="relative flex items-center"
+    <div 
+      className="relative bg-[#050505] w-full" 
+      onMouseMove={handleMouseMove}
+    >
+      
+      {/* ========================================================= */}
+      {/* 1. LAYER GAMBAR (BACKGROUND FIXED)                       */}
+      {/* ========================================================= */}
+      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 hidden md:block overflow-hidden">
+        <AnimatePresence mode="wait">
+          {hoveredId && activeProject && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+              animate={{ 
+                opacity: 0.4, // Opacity rendah agar tidak mengganggu teks
+                scale: 1,
+                filter: "blur(0px)",
+                x: cursorPos.x - 300, // Center image (600px / 2)
+                y: cursorPos.y - 200, // Center image (400px / 2)
+                rotate: (cursorPos.x - window.innerWidth / 2) * 0.005
+              }}
+              exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+              transition={{ type: "spring", stiffness: 100, damping: 20, mass: 0.5 }}
+              className="absolute w-[600px] h-[400px] rounded-[1rem] overflow-hidden bg-white/5"
             >
-              <Link 
-                href={`/project/${project.id}`} 
-                className="group cursor-pointer block relative z-10"
-              >
-                <motion.h2 
-                  animate={{ 
-                    x: hoveredId === project.id ? 20 : 0,
-                    color: hoveredId === project.id ? '#3b82f6' : 'rgba(255,255,255,0.05)' 
-                  }}
-                  transition={techTween}
-                  className="text-4xl md:text-[6vw] font-display font-black uppercase tracking-tighter italic leading-[0.85] md:text-white/5"
-                >
-                  {project.title.split(' ')[0]} <br />
-                  
-                  <span 
-                    className="transition-all duration-0"
-                    style={{ 
-                      WebkitTextStroke: hoveredId === project.id ? '0px transparent' : '1px rgba(255,255,255,0.1)',
-                      color: hoveredId === project.id ? 'inherit' : 'transparent'
-                    }}
-                  >
-                    {project.title.split(' ').slice(1).join(' ')}
-                  </span>
-                </motion.h2>
+              <Image 
+                src={activeProject.mainImage} 
+                alt="Preview"
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-black/20" /> {/* Overlay gelapkan dikit */}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-                {/* ID Proyek */}
-                <div className={`absolute -top-4 -left-6 md:-left-12 transition-all duration-300 font-mono text-blue-500 text-sm md:text-lg font-black italic pointer-events-none ${hoveredId === project.id ? 'opacity-40 translate-x-2' : 'opacity-0'}`}>
-                  {project.id}
+      {/* ========================================================= */}
+      {/* 2. LAYER LIST TEXT (FOREGROUND)                          */}
+      {/* ========================================================= */}
+      <section className="relative z-10 min-h-screen flex flex-col justify-center py-32">
+        
+        <div className="container mx-auto px-6 md:px-12 mb-12">
+           <span className="text-blue-500 font-mono text-[9px] tracking-[0.6em] uppercase font-bold opacity-60 pl-4">
+             // Selected_Works
+           </span>
+        </div>
+
+        <div className="flex flex-col border-t border-white/5">
+          {projects.map((project, index) => {
+            const isHovered = hoveredId === project.id;
+
+            return (
+              <Link 
+                key={project.id} 
+                href={`/project/${project.id}`}
+                className="group block relative border-b border-white/5 transition-colors duration-500"
+                onMouseEnter={() => setHoveredId(project.id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
+                <div className="container mx-auto px-6 md:px-12 py-10 flex items-center justify-between">
+                  
+                  {/* KIRI: PROJECT TITLE */}
+                  <motion.div 
+                    className="flex items-center gap-6"
+                    initial={false}
+                    animate={{ x: isHovered ? 40 : 0 }} // Geser ke kanan saat hover
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  >
+                    {/* ID kecil (Hanya muncul saat hover) */}
+                    <motion.span 
+                      className="font-mono text-xs text-blue-500"
+                      animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
+                    >
+                      0{index + 1}
+                    </motion.span>
+
+                    {/* JUDUL UTAMA */}
+                    <h2 
+                      className={`text-3xl md:text-6xl font-black uppercase tracking-tighter leading-none transition-all duration-300 ${
+                        isHovered ? 'text-blue-500 opacity-100' : 'text-white opacity-20'
+                      }`}
+                    >
+                      {project.title}
+                    </h2>
+                  </motion.div>
+
+                  {/* KANAN: SUBTITLE / INFO (Muncul saat Hover) */}
+                  <div className="hidden md:block overflow-hidden">
+                    <AnimatePresence>
+                      {isHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, x: -50 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: 20 }}
+                          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                          className="flex items-center gap-8"
+                        >
+                          <div className="flex flex-col items-end">
+                            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white">
+                              {project.tech.split(',')[0]} {/* Tech Stack */}
+                            </span>
+                            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white/40">
+                              {project.subtitle || "Interaction"}
+                            </span>
+                          </div>
+                          
+                          {/* Arrow Icon */}
+                          <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
+                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                             </svg>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
                 </div>
               </Link>
-
-              {/* Indikator Samping */}
-              <AnimatePresence>
-                {hoveredId === project.id && (
-                  <motion.div 
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={techTween}
-                    className="ml-10 md:ml-20 hidden md:flex items-center gap-6 pointer-events-none whitespace-nowrap"
-                  >
-                    <div className="h-[1px] w-16 bg-blue-500 shadow-[0_0_15px_#3b82f6]" />
-                    <div className="flex flex-col">
-                      <span className="text-blue-500 font-mono text-[9px] font-bold tracking-[0.4em] uppercase opacity-40 mb-1">Node_Connected</span>
-                      <span className="text-blue-500 font-mono text-[12px] font-bold tracking-widest uppercase">
-                        {project.subtitle}
-                      </span>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>

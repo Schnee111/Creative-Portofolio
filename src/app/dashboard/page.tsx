@@ -294,7 +294,7 @@ export default function DashboardPage() {
         </header>
 
         {/* 4. PROJECTS SHOWCASE */}
-        <section id="work" className="py-40">
+        <section id="work" className="py-20">
           <ProjectShowcase />
         </section>
 
