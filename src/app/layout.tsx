@@ -3,19 +3,16 @@ import { Space_Grotesk, IBM_Plex_Mono, Geist } from 'next/font/google';
 import './globals.css';
 import ClientLayout from '@/components/ClientLayout';
 
-// 1. Font untuk Display (Judul Besar)
 const spaceGrotesk = Space_Grotesk({ 
   subsets: ['latin'],
   variable: '--font-space',
 });
 
-// 2. Font untuk Body (Geist)
 const geistSans = Geist({ 
   subsets: ['latin'],
   variable: '--font-geist',
 });
 
-// 3. Font untuk Logs/Monospace (IBM Plex Mono)
 const ibmPlexMono = IBM_Plex_Mono({ 
   weight: ['400', '500', '600'],
   subsets: ['latin'],
@@ -23,7 +20,6 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  // metadataBase: new URL('https://domain-anda.com'), // Penting untuk path gambar absolut
   title: {
     default: 'Muhammad Daffa Maarif | Portfolio',
     template: '%s | Muhammad Daffa Maarif',
@@ -61,6 +57,19 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    minimumScale: 1,
+    userScalable: false,
+    viewportFit: 'cover',
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'black-translucent',
+  }
 };
 
 export default function RootLayout({
