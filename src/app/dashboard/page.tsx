@@ -12,7 +12,6 @@ export default function DashboardPage() {
   const [logs, setLogs] = useState<string[]>([])
   const [systemTime, setSystemTime] = useState('')
   const [navbarVisible, setNavbarVisible] = useState(true)
-  const [scrollProgress, setScrollProgress] = useState(0)
   const lastScrollY = useRef(0)
 
   const sections = [
@@ -45,6 +44,13 @@ export default function DashboardPage() {
 
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    if (!booting) {
+      window.scrollTo(0, 0);
+      document.documentElement.classList.remove('lenis-stopped');
+    }
+  }, [booting]);
 
   // 1.1 Hide scrollbar during booting
   useEffect(() => {
@@ -86,10 +92,6 @@ export default function DashboardPage() {
         setNavbarVisible(true)
       }
       lastScrollY.current = currentScrollY
-
-      // Scroll progress
-      const progress = (currentScrollY / (documentHeight - windowHeight)) * 100
-      setScrollProgress(Math.min(progress, 100))
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -211,15 +213,6 @@ export default function DashboardPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </motion.button>
-              </div>
-
-              {/* Scroll Progress Bar */}
-              <div className="absolute bottom-0 left-0 w-full h-[1px] bg-white/5">
-                <motion.div 
-                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
-                  style={{ width: `${scrollProgress}%` }}
-                  transition={{ duration: 0.1 }}
-                />
               </div>
             </motion.nav>
 

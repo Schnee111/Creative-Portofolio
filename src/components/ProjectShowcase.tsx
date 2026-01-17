@@ -63,12 +63,12 @@ export default function ProjectShowcase() {
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
-      targetScrollRef.current += e.deltaY * 2.5
+      targetScrollRef.current += e.deltaY * 2
       targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current, el.scrollWidth - el.clientWidth))
     }
 
     const smoothScroll = () => {
-      currentScrollRef.current += (targetScrollRef.current - currentScrollRef.current) * 0.1
+      currentScrollRef.current += (targetScrollRef.current - currentScrollRef.current) * 0.07
       el.scrollLeft = currentScrollRef.current
       
       // FIXED: Tetap loop terus menerus selama modal terbuka
