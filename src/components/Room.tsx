@@ -204,7 +204,7 @@ export function ModelRoom(props: JSX.IntrinsicElements['group']) {
                     <div className="h-[1px] flex-1 bg-gradient-to-r from-blue-500/50 to-transparent" />
                   </div>
                   
-                  <h1 className="text-white font-black text-[90px] leading-none tracking-tighter italic mb-2">
+                  <h1 className="text-white font-display font-black text-[90px] leading-none tracking-tighter italic mb-2">
                     katsukare<span className="text-blue-500">.</span>OS
                   </h1>
                   <p className="text-white/40 font-mono text-sm tracking-[0.8em] uppercase pl-2">
