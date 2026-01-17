@@ -8,8 +8,11 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  /* Mapping Font Baru */
+  --font-display: var(--font-space), ui-sans-serif, system-ui;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui;
+  --font-mono: var(--font-ibm), ui-monospace, SFMono-Regular;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -88,8 +91,9 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  background: #050505;
-  color: #ffffff;
+  background: var(--background);
+  color: var(--foreground);
+  @apply font-sans;
   overflow-x: hidden;
 }
 
@@ -163,4 +167,16 @@ html.lenis, html.lenis body {
 
 main {
   min-height: 100vh;
+}
+
+/* CUSTOM CURSOR ======= */
+
+/* Sembunyikan kursor default di seluruh aplikasi */
+* {
+  cursor: none !important;
+}
+
+/* Pastikan elemen interaktif tetap memiliki pointer-events */
+a, button, [role="button"], .group {
+  cursor: none !important;
 }
