@@ -150,8 +150,8 @@ export default function Home() {
     <div ref={containerRef} style={{ height: '550vh' }} className="relative bg-transparent font-sans selection:bg-blue-500/30">
       
       {/* SECTION 1: HERO */}
-      <div className="fixed inset-0 flex flex-col items-center justify-center z-[100] pointer-events-none text-center px-4">
-        {/* Tambahkan class 'hero-glow' di sini */}
+      {/* <div className="fixed inset-0 flex flex-col items-center justify-center z-[100] pointer-events-none text-center px-4">
+
         <div className="hero-glow absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_transparent_75%)]" />
         
         <div className="relative z-10">
@@ -177,7 +177,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* SECTION 2: ABOUT */}
       <div className="fixed inset-0 flex items-end justify-start p-10 md:p-24 z-[90] pointer-events-none">
         <div id="shadow-about" className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-transparent opacity-0 pointer-events-none" />
         <div ref={aboutRef} className="max-w-2xl opacity-0 relative z-10">
@@ -191,7 +190,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* SECTION 3: EXPERTISE */}
       <div className="fixed inset-0 flex flex-col items-end justify-center px-10 md:px-32 z-[90] pointer-events-none text-right">
         <div id="shadow-exp" className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-black/60 to-transparent opacity-0 pointer-events-none" />
         <div className="space-y-2 md:space-y-4 relative z-10">
@@ -204,11 +202,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* SECTION 4: FINAL INDICATOR */}
       <div ref={indicatorRef} className="fixed bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-[100] opacity-0 pointer-events-none">
         <span className="text-white font-mono text-[9px] uppercase tracking-[0.8em]">Scroll to Explore more</span>
         <div className="w-[1px] h-16 bg-gradient-to-t from-blue-600 to-transparent" />
-      </div>
+      </div> */}
 
     </div>
 
