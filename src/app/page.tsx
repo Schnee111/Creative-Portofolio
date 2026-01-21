@@ -150,7 +150,7 @@ export default function Home() {
     <div ref={containerRef} style={{ height: '550vh' }} className="relative bg-transparent font-sans selection:bg-blue-500/30">
       
       {/* SECTION 1: HERO */}
-      {/* <div className="fixed inset-0 flex flex-col items-center justify-center z-[100] pointer-events-none text-center px-4">
+      <div className="fixed inset-0 flex flex-col items-center justify-center z-[100] pointer-events-none text-center px-4">
 
         <div className="hero-glow absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,0,0,0.7)_0%,_transparent_75%)]" />
         
@@ -205,7 +205,7 @@ export default function Home() {
       <div ref={indicatorRef} className="fixed bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-[100] opacity-0 pointer-events-none">
         <span className="text-white font-mono text-[9px] uppercase tracking-[0.8em]">Scroll to Explore more</span>
         <div className="w-[1px] h-16 bg-gradient-to-t from-blue-600 to-transparent" />
-      </div> */}
+      </div>
 
     </div>
 
