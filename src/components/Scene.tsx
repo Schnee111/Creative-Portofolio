@@ -135,6 +135,7 @@ export default function Scene() {
             }}
         >
             <PerformanceMonitor 
+              bounds={() => [45, 60]}
               onDecline={() => setQualityTier(prev => Math.max(0, prev - 1))}
               onIncline={() => setQualityTier(prev => Math.min(2, prev + 1))}
               flipflops={3}
