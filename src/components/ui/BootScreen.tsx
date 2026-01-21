@@ -5,9 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion'
 interface BootScreenProps {
     booting: boolean
     percent: number
+    headerLeft?: string
+    headerRight?: string
+    footerLeft?: string
+    footerStatus?: string
 }
 
-export default function BootScreen({ booting, percent }: BootScreenProps) {
+export default function BootScreen({
+    booting,
+    percent,
+    headerLeft = "System_Check_Init",
+    headerRight = "Secure_Env_v5.2",
+    footerLeft = "Loading Assets...",
+    footerStatus = percent < 100 ? "Processing" : "Ready"
+}: BootScreenProps) {
     return (
         <AnimatePresence mode="wait">
             {booting && (
@@ -18,8 +29,8 @@ export default function BootScreen({ booting, percent }: BootScreenProps) {
                 >
                     {/* Top Corners */}
                     <div className="flex justify-between items-start opacity-30 text-[10px] tracking-widest uppercase">
-                        <span>System_Check_Init</span>
-                        <span>Secure_Env_v5.2</span>
+                        <span>{headerLeft}</span>
+                        <span>{headerRight}</span>
                     </div>
 
                     {/* Center: Massive Counter */}
@@ -45,8 +56,8 @@ export default function BootScreen({ booting, percent }: BootScreenProps) {
                     {/* Bottom Corners */}
                     <div className="flex justify-between items-end">
                         <div className="flex flex-col gap-1 text-[10px] text-white/30 uppercase tracking-widest">
-                            <span>Loading Assets...</span>
-                            <span className="text-blue-500">{percent < 100 ? "Processing" : "Ready"}</span>
+                            <span>{footerLeft}</span>
+                            <span className="text-blue-500">{footerStatus}</span>
                         </div>
 
                         <div className="hidden md:block text-[10px] text-white/20">

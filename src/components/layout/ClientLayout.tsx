@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { useProgress } from '@react-three/drei'
 import Scene from '../3d/Scene'
 import SmoothScroll from './SmoothScroll'
-import Loader from '../Loader'
+import BootScreen from '../ui/BootScreen'
 import CustomCursor from './CustomCursor'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
@@ -13,12 +14,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const thumbRef = useRef<HTMLDivElement>(null)
   const [showScrollbar, setShowScrollbar] = useState(true)
 
+  // BootScreen Logic
+  const { active, progress } = useProgress()
+  const [showBootScreen, setShowBootScreen] = useState(true)
+
   // Only show Scene and Loader on homepage
   const isHomepage = pathname === '/'
 
-  const handleLoaderFinished = () => {
-    window.dispatchEvent(new Event('start-site-intro'))
-  }
+  useEffect(() => {
+    if (isHomepage && !active && progress === 100) {
+      const timeout = setTimeout(() => {
+        setShowBootScreen(false)
+        window.dispatchEvent(new Event('start-site-intro'))
+      }, 1000)
+      return () => clearTimeout(timeout)
+    }
+  }, [active, progress, isHomepage])
 
   // Modern viewport units (svh, dvh) are used in CSS, no JS fallback needed
   // This allows natural scrolling while keeping fixed elements stable
@@ -88,8 +99,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      {/* Only render Loader on homepage */}
-      {isHomepage && <Loader onFinished={handleLoaderFinished} />}
+      {/* Only render BootScreen on homepage */}
+      {isHomepage && (
+        <BootScreen
+          booting={showBootScreen}
+          percent={Math.round(progress)}
+          headerLeft="System_Bios_Init"
+          headerRight="Ver_2.0.4"
+          footerLeft="Loading_3D_Environment..."
+          footerStatus={progress < 100 ? "Allocating_Memory" : "Ready"}
+        />
+      )}
 
       {/* Only render 3D Scene on homepage */}
       {isHomepage && (
