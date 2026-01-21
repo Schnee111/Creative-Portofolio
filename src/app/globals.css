@@ -138,16 +138,26 @@ body {
 /* 1.1 CUSTOM SCROLL INDICATOR (Lusion Style - Inset Position) */
 .scroll-indicator {
   position: fixed;
-  right: 24px;
-  top: 220px;
-  height: calc(100vh - 440px);
-  width: 4px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 180px;
+  width: 3px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
+}
+
+/* Desktop adjustments */
+@media (min-width: 768px) {
+  .scroll-indicator {
+    right: 24px;
+    height: 180px;
+    width: 4px;
+  }
 }
 
 .scroll-indicator.visible {
