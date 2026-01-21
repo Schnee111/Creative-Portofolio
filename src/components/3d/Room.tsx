@@ -3,8 +3,8 @@
 import * as THREE from 'three'
 import React, { JSX, useState, useEffect } from 'react'
 import { useGLTF, Html } from '@react-three/drei'
-import MonitorScreenLeft from '../room/MonitorScreenLeft'
-import MonitorScreenMain from '../room/MonitorScreenMain'
+import MonitorScreenLeft from './screen/MonitorScreenLeft'
+import MonitorScreenMain from './screen/MonitorScreenMain'
 
 export function ModelRoom(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/computer-room.glb') as unknown as any

@@ -5,9 +5,9 @@ import { motion } from 'framer-motion'
 import ProjectShowcase from '@/components/dashboard/ProjectShowcase'
 import ExpertiseColumns from '@/components/dashboard/ExpertiseColumns'
 import BootScreen from '@/components/ui/BootScreen'
-import Navbar from '@/components/dashboard/Navbar'
+import Navbar from '@/components/dashboard/layout/Navbar'
 import DirectoryHeader from '@/components/dashboard/DirectoryHeader'
-import Footer from '@/components/dashboard/Footer'
+import Footer from '@/components/dashboard/layout/Footer'
 
 export default function DashboardPage() {
   const [booting, setBooting] = useState(true)

@@ -5,8 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import gsap from 'gsap'
 import { projects } from '@/config/projects'
-import ProjectMedia from '@/components/project/ProjectMedia'
-import ProjectBridge from '@/components/project/ProjectBridge'
+import ProjectMedia from '@/components/dashboard/project/ProjectMedia'
+import ProjectBridge from '@/components/dashboard/project/ProjectBridge'
 import { useHorizontalScroll } from '@/hooks/useHorizontalScroll'
 
 export default function ProjectDetail() {
