@@ -114,7 +114,7 @@ function CameraHandler() {
 export default function Scene() {
   // Hanya simpan state qualityTier
   // 0 = Low (No Effects), 1 = Medium (Light), 2 = High (Full)
-  const [qualityTier, setQualityTier] = useState(2)
+  const [qualityTier, setQualityTier] = useState(0)
 
   return (
     <>
@@ -124,10 +124,10 @@ export default function Scene() {
             style={{ pointerEvents: DEBUG_MODE ? 'auto' : 'none' }} 
             shadows
             // Mengatur resolusi dinamis berdasarkan tier
-            dpr={[1, qualityTier === 2 ? 1.5 : 1.1]}
+            dpr={[1, qualityTier === 2 ? 1.5 : 1]}
             gl={{ 
               antialias: false, 
-              powerPreference: "high-performance", 
+              powerPreference: "default", 
               stencil: false, 
               depth: true,
               toneMapping: THREE.ACESFilmicToneMapping, 
@@ -154,13 +154,9 @@ export default function Scene() {
               penumbra={1} 
               intensity={20} 
               color="#ffaa77" 
-              castShadow 
-              // Set shadow bias via ref callback
-              ref={light => {
-                if (light) {
-                  light.shadow.bias = -0.0001;
-                }
-              }}
+              castShadow={qualityTier === 2}
+              shadow-mapSize={[512, 512]} 
+              shadow-bias={-0.0001} 
             />
 
             {/* <pointLight 
