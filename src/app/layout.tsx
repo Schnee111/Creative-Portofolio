@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, IBM_Plex_Mono, Geist } from 'next/font/google';
 import './globals.css';
-import ClientLayout from '@/components/ClientLayout';
+import ClientLayout from '@/components/layout/ClientLayout';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],

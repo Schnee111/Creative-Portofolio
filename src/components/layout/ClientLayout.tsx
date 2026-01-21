@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import Scene from './Scene'
+import Scene from '../3d/Scene'
 import SmoothScroll from './SmoothScroll'
-import Loader from './Loader'
+import Loader from '../Loader'
 import CustomCursor from './CustomCursor'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
