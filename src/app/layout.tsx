@@ -3,17 +3,17 @@ import { Space_Grotesk, IBM_Plex_Mono, Geist } from 'next/font/google';
 import './globals.css';
 import ClientLayout from '@/components/ClientLayout';
 
-const spaceGrotesk = Space_Grotesk({ 
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-space',
 });
 
-const geistSans = Geist({ 
+const geistSans = Geist({
   subsets: ['latin'],
   variable: '--font-geist',
 });
 
-const ibmPlexMono = IBM_Plex_Mono({ 
+const ibmPlexMono = IBM_Plex_Mono({
   weight: ['400', '500', '600'],
   subsets: ['latin'],
   variable: '--font-ibm',
@@ -64,6 +64,7 @@ export const metadata: Metadata = {
     minimumScale: 1,
     userScalable: false,
     viewportFit: 'cover',
+    interactiveWidget: 'resizes-content',
   },
   other: {
     'mobile-web-app-capable': 'yes',
@@ -78,8 +79,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html 
-      lang="en" 
+    <html
+      lang="en"
       className={`${spaceGrotesk.variable} ${geistSans.variable} ${ibmPlexMono.variable}`}
     >
       <body className="antialiased selection:bg-blue-500/30">

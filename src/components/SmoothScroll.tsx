@@ -18,15 +18,18 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   }, []);
 
   return (
-    <ReactLenis 
-      root 
-      options={{ 
+    <ReactLenis
+      root
+      options={{
         lerp: 0.1,
         duration: 1.5,
         smoothWheel: true,
-        wheelMultiplier: 1,
+        wheelMultiplier: 1.2,
         touchMultiplier: 2,
         infinite: false,
+        prevent: (node: any) => node.classList.contains('no-smooth-scroll'),
+        overscroll: false,
+        syncTouch: true,
       }}
     >
       {children}

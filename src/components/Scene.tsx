@@ -12,17 +12,17 @@ import { useRouter } from 'next/navigation'
 import { useControls, button } from 'leva'
 import { Perf } from 'r3f-perf'
 
-const DEBUG_MODE = false; 
+const DEBUG_MODE = false;
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const START_POS  = { x: 1.757, y: 0.467, z: 3.037 }
+const START_POS = { x: 1.757, y: 0.467, z: 3.037 }
 const START_LOOK = { x: -0.478, y: 0.122, z: 0.367 }
 
-const END_POS    = { x: -0.09, y: 0.117, z: 0.598 }
-const END_LOOK   = { x: -0.362, y: 0.118, z: 0.269 }
+const END_POS = { x: -0.09, y: 0.117, z: 0.598 }
+const END_LOOK = { x: -0.362, y: 0.118, z: 0.269 }
 
 function Debugger() {
   const { camera } = useThree()
@@ -30,21 +30,21 @@ function Debugger() {
 
   useControls({
     'PRINT KOORDINAT': button(() => {
-        const p = camera.position
-        const t = orbitRef.current.target
-        console.log(`
+      const p = camera.position
+      const t = orbitRef.current.target
+      console.log(`
 // === SALIN KE DATA KOORDINAT ===
 const START_POS  = { x: ${p.x.toFixed(3)}, y: ${p.y.toFixed(3)}, z: ${p.z.toFixed(3)} }
 const START_LOOK = { x: ${t.x.toFixed(3)}, y: ${t.y.toFixed(3)}, z: ${t.z.toFixed(3)} }
 // ==============================
         `)
-        alert('Koordinat dicetak di Console (F12)')
+      alert('Koordinat dicetak di Console (F12)')
     })
   })
 
   useEffect(() => {
     camera.position.set(START_POS.x, START_POS.y, START_POS.z)
-    if(orbitRef.current) orbitRef.current.target.set(START_LOOK.x, START_LOOK.y, START_LOOK.z)
+    if (orbitRef.current) orbitRef.current.target.set(START_LOOK.x, START_LOOK.y, START_LOOK.z)
   }, [camera])
 
   return <OrbitControls ref={orbitRef} makeDefault />
@@ -80,7 +80,7 @@ function CameraHandler() {
         trigger: "body",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.0, 
+        scrub: 1.0,
         onLeave: () => { router.push('/dashboard') }
       }
     })
@@ -118,102 +118,105 @@ export default function Scene() {
 
   return (
     <>
-      <div className="fixed inset-0 z-0 bg-[#050505]">
+      <div
+        className="fixed inset-0 z-0 bg-[#050505]"
+        style={{ height: '100svh' }}
+      >
         <Canvas
-            camera={{ position: [0, 0, 0], fov: 45, near: 0.01 }}
-            style={{ pointerEvents: DEBUG_MODE ? 'auto' : 'none' }} 
-            shadows
-            // Mengatur resolusi dinamis berdasarkan tier
-            dpr={[1, qualityTier === 2 ? 1.25 : 1]}
-            gl={{ 
-              antialias: false, 
-              powerPreference: "default", 
-              stencil: false, 
-              depth: true,
-              toneMapping: THREE.ACESFilmicToneMapping, 
-              toneMappingExposure: 0.9 
-            }}
+          camera={{ position: [0, 0, 0], fov: 45, near: 0.01 }}
+          style={{ pointerEvents: DEBUG_MODE ? 'auto' : 'none' }}
+          shadows
+          // Mengatur resolusi dinamis berdasarkan tier
+          dpr={[1, qualityTier === 2 ? 1.25 : 1]}
+          gl={{
+            antialias: false,
+            powerPreference: "default",
+            stencil: false,
+            depth: true,
+            toneMapping: THREE.ACESFilmicToneMapping,
+            toneMappingExposure: 0.9
+          }}
         >
-            <PerformanceMonitor 
-              bounds={() => [40, 60]}
-              onDecline={() => setQualityTier(prev => Math.max(0, prev - 1))}
-              onIncline={() => setQualityTier(prev => Math.min(2, prev + 1))}
-              flipflops={3}
-            />
+          <PerformanceMonitor
+            bounds={() => [40, 60]}
+            onDecline={() => setQualityTier(prev => Math.max(0, prev - 1))}
+            onIncline={() => setQualityTier(prev => Math.min(2, prev + 1))}
+            flipflops={3}
+          />
 
-            {/* <Perf position="top-left" /> */}
+          {/* <Perf position="top-left" /> */}
 
-            <color attach="background" args={['#050505']} />
-            <fog attach="fog" args={['#050505', 5, 20]} /> 
+          <color attach="background" args={['#050505']} />
+          <fog attach="fog" args={['#050505', 5, 20]} />
 
-            {/* LIGHTING SETUP */}
-            <ambientLight intensity={0.2} color="#1a2035" /> 
+          {/* LIGHTING SETUP */}
+          <ambientLight intensity={0.2} color="#1a2035" />
 
-            <spotLight 
-              position={[3, 0, 2]} 
-              angle={0.5} 
-              penumbra={1} 
-              intensity={20} 
-              color="#ffaa77" 
-              castShadow={qualityTier === 2}
-              shadow-mapSize={[512, 512]} 
-              shadow-bias={-0.0001} 
-            />
+          <spotLight
+            position={[3, 0, 2]}
+            angle={0.5}
+            penumbra={1}
+            intensity={20}
+            color="#ffaa77"
+            castShadow={qualityTier === 2}
+            shadow-mapSize={[512, 512]}
+            shadow-bias={-0.0001}
+          />
 
-            {/* <pointLight 
+          {/* <pointLight 
               position={[-3, 0, -2]} 
               intensity={2} 
               color="#4c6ef5" 
             /> */}
 
-            <pointLight 
-              position={[-0.2, 0.3, 0.6]} 
-              distance={3}
-              intensity={1} 
-              color="#00ffff" 
-            />
+          <pointLight
+            position={[-0.2, 0.3, 0.6]}
+            distance={3}
+            intensity={1}
+            color="#00ffff"
+          />
 
-            {DEBUG_MODE ? <Debugger /> : <CameraHandler />}
+          {DEBUG_MODE ? <Debugger /> : <CameraHandler />}
 
-            <group rotation={[0, 40 * (Math.PI / 180), 0]}>
-                <ModelRoom />
-            </group>
+          <group rotation={[0, 40 * (Math.PI / 180), 0]}>
+            <ModelRoom />
+          </group>
 
-            <Environment preset="city" environmentIntensity={0.5} blur={0.8} />
+          <Environment preset="city" environmentIntensity={0.5} blur={0.8} />
 
-            <ContactShadows 
-              position={[0, -0.3, 0]}
-              opacity={0.6} 
-              scale={10} 
-              blur={2.5} 
-              far={4} 
-              resolution={256}
-              frames={1}
-            />
+          <ContactShadows
+            position={[0, -0.3, 0]}
+            opacity={0.6}
+            scale={10}
+            blur={2.5}
+            far={4}
+            resolution={256}
+            frames={1}
+          />
 
-            {/* POST PROCESSING */}
-            {qualityTier > 0 && (
-              <EffectComposer 
-                  enableNormalPass={false} 
-                  multisampling={0}
-                  resolutionScale={qualityTier === 2 ? 1 : 0.5} 
-              >
-                  <Bloom 
-                      luminanceThreshold={1} 
-                      mipmapBlur 
-                      intensity={qualityTier === 2 ? 1.4 : 0.8} 
-                      radius={qualityTier === 2 ? 0.5 : 0.3} 
-                  />
-                  
-                  <Noise opacity={0.03} />
-                  
-                  <Vignette eskil={false} offset={0.1} darkness={0.9} />
-                  {/* <ChromaticAberration offset={[0.001, 0.001]} radialModulation={false} modulationOffset={0} /> */}
+          {/* POST PROCESSING */}
+          {qualityTier > 0 && (
+            <EffectComposer
+              enableNormalPass={false}
+              multisampling={0}
+              resolutionScale={qualityTier === 2 ? 1 : 0.5}
+            >
+              <Bloom
+                luminanceThreshold={1}
+                mipmapBlur
+                intensity={qualityTier === 2 ? 1.4 : 0.8}
+                radius={qualityTier === 2 ? 0.5 : 0.3}
+              />
 
-              </EffectComposer>
-            )}
+              <Noise opacity={0.03} />
+
+              <Vignette eskil={false} offset={0.1} darkness={0.9} />
+              {/* <ChromaticAberration offset={[0.001, 0.001]} radialModulation={false} modulationOffset={0} /> */}
+
+            </EffectComposer>
+          )}
         </Canvas>
-      
+
       </div>
       {console.log(qualityTier)}
     </>

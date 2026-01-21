@@ -12,7 +12,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
   const [showScrollbar, setShowScrollbar] = useState(true)
-  
+
   // Only show Scene and Loader on homepage
   const isHomepage = pathname === '/'
 
@@ -20,29 +20,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     window.dispatchEvent(new Event('start-site-intro'))
   }
 
-  useEffect(() => {
-    const setVh = () => {
-      // Menghitung 1% dari window.innerHeight
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-
-    setVh();
-    window.addEventListener('resize', setVh);
-    return () => window.removeEventListener('resize', setVh);
-  }, []);
+  // Modern viewport units (svh, dvh) are used in CSS, no JS fallback needed
+  // This allows natural scrolling while keeping fixed elements stable
 
   // Hide scrollbar during page transition to dashboard
   useEffect(() => {
     if (pathname === '/dashboard') {
       // Hide scrollbar immediately on dashboard navigation
       setShowScrollbar(false)
-      
+
       // Show scrollbar after booting animation (approx 2 seconds)
       const timer = setTimeout(() => {
         setShowScrollbar(true)
       }, 2000)
-      
+
       return () => clearTimeout(timer)
     } else {
       // Show immediately on other pages
@@ -84,7 +75,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     window.addEventListener('scroll', updateScrollIndicator, { passive: true })
     window.addEventListener('resize', updateScrollIndicator, { passive: true })
-    
+
     // Initial calculation
     setTimeout(updateScrollIndicator, 100)
 
@@ -99,15 +90,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <>
       {/* Only render Loader on homepage */}
       {isHomepage && <Loader onFinished={handleLoaderFinished} />}
-      
+
       {/* Only render 3D Scene on homepage */}
       {isHomepage && (
-        <div className="fixed inset-0 z-0">
+        <div className="fixed inset-0 z-0" style={{ height: '100svh' }}>
           <Scene />
         </div>
       )}
 
-      <main className="relative z-10 bg-transparent">
+      <main className="relative z-10 bg-transparent" style={{ minHeight: '100dvh' }}>
         <SmoothScroll>
           <CustomCursor />
           {children}
@@ -115,8 +106,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </main>
 
       {/* Custom Scroll Indicator - Hide during dashboard booting */}
-      <div 
-        ref={scrollIndicatorRef} 
+      <div
+        ref={scrollIndicatorRef}
         className="scroll-indicator"
         style={{ display: showScrollbar ? 'block' : 'none' }}
       >
