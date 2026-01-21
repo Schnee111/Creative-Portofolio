@@ -8,7 +8,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const lenisRef = useRef<any>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Detect mobile viewport
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -29,25 +28,19 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     return () => gsap.ticker.remove(update);
   }, []);
 
-  // Disable smooth scroll on mobile for native feel
-  if (isMobile) {
-    return <>{children}</>;
-  }
-
   return (
     <ReactLenis
       root
-      ref={lenisRef}
       options={{
-        lerp: 0.1,
+        lerp: isMobile ? 0.5 : 0.1,
         duration: 1.5,
         smoothWheel: true,
-        wheelMultiplier: 1.2,
+        wheelMultiplier: 0.8,
         touchMultiplier: 1,
         infinite: false,
         prevent: (node: any) => node.classList.contains('no-smooth-scroll'),
         overscroll: false,
-        syncTouch: false,
+        syncTouch: true,
       }}
     >
       {children}
