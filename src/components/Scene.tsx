@@ -141,7 +141,7 @@ export default function Scene() {
               flipflops={3}
             />
 
-            <Perf position="top-left" />
+            {/* <Perf position="top-left" /> */}
 
             <color attach="background" args={['#050505']} />
             <fog attach="fog" args={['#050505', 5, 20]} /> 
