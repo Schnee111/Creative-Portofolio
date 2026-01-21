@@ -97,7 +97,7 @@ function CameraHandler() {
 
   useFrame(() => {
     const progress = tl.current ? tl.current.progress() : 0
-    const parallaxStrength = Math.max(0, 1 - (progress * 1.25))
+    const parallaxStrength = Math.max(0, 1 - (progress * 1.3))
 
     smoothMouse.current.x = THREE.MathUtils.lerp(smoothMouse.current.x, mouse.current.x, 0.02)
     smoothMouse.current.y = THREE.MathUtils.lerp(smoothMouse.current.y, mouse.current.y, 0.02)
@@ -114,7 +114,7 @@ function CameraHandler() {
 export default function Scene() {
   // Hanya simpan state qualityTier
   // 0 = Low (No Effects), 1 = Medium (Light), 2 = High (Full)
-  const [qualityTier, setQualityTier] = useState(0)
+  const [qualityTier, setQualityTier] = useState(1)
 
   return (
     <>
@@ -124,7 +124,7 @@ export default function Scene() {
             style={{ pointerEvents: DEBUG_MODE ? 'auto' : 'none' }} 
             shadows
             // Mengatur resolusi dinamis berdasarkan tier
-            dpr={[1, qualityTier === 2 ? 1.5 : 1]}
+            dpr={[1, qualityTier === 2 ? 1.25 : 1]}
             gl={{ 
               antialias: false, 
               powerPreference: "default", 
@@ -135,13 +135,13 @@ export default function Scene() {
             }}
         >
             <PerformanceMonitor 
-              bounds={() => [45, 60]}
+              bounds={() => [40, 60]}
               onDecline={() => setQualityTier(prev => Math.max(0, prev - 1))}
               onIncline={() => setQualityTier(prev => Math.min(2, prev + 1))}
               flipflops={3}
             />
 
-            {/* <Perf position="top-left" /> */}
+            <Perf position="top-left" />
 
             <color attach="background" args={['#050505']} />
             <fog attach="fog" args={['#050505', 5, 20]} /> 
@@ -205,7 +205,7 @@ export default function Scene() {
                       radius={qualityTier === 2 ? 0.5 : 0.3} 
                   />
                   
-                  {qualityTier === 2 ? <Noise opacity={0.03} /> : (null as any)}
+                  <Noise opacity={0.03} />
                   
                   <Vignette eskil={false} offset={0.1} darkness={0.9} />
                   {/* <ChromaticAberration offset={[0.001, 0.001]} radialModulation={false} modulationOffset={0} /> */}
@@ -215,6 +215,7 @@ export default function Scene() {
         </Canvas>
       
       </div>
+      {console.log(qualityTier)}
     </>
   )
 }
