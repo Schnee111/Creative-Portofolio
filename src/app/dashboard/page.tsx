@@ -89,17 +89,17 @@ export default function DashboardPage() {
         <DirectoryHeader />
 
         {/* Projects Showcase */}
-        <section id="work" className="py-20">
+        <section id="work" className="py-12 md:py-20">
           <ProjectShowcase />
         </section>
 
         {/* Expertise Section */}
-        <section id="expertise" className="py-40 border-t border-white/5">
+        <section id="expertise" className="py-20 md:py-40 border-t border-white/5">
           <div className="container mx-auto px-6 mb-20">
             <span className="text-blue-500 font-mono text-[9px] tracking-[0.4em] uppercase block">
               Capabilities
             </span>
-            <h2 className="text-4xl md:text-6xl font-bold mt-4 tracking-tighter">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mt-4 tracking-tighter">
               TECHNICAL <span className="text-white/20">STACK</span>
             </h2>
           </div>

@@ -9,7 +9,7 @@ interface FooterProps {
 
 export default function Footer({ onScrollTo }: FooterProps) {
     return (
-        <footer id="contact" className="relative bg-[#080808] pt-32 pb-8 overflow-hidden">
+        <footer id="contact" className="relative bg-[#080808] pt-16 md:pt-32 pb-8 overflow-hidden">
 
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
@@ -41,14 +41,14 @@ export default function Footer({ onScrollTo }: FooterProps) {
                 <div className="mb-32 relative group">
                     <a
                         href="mailto:hello@daffa.dev"
-                        className="block text-[11vw] leading-[0.8] font-black tracking-tighter text-white transition-colors duration-500 group-hover:text-blue-600 mix-blend-difference"
+                        className="block text-[8vw] sm:text-[9vw] md:text-[10vw] lg:text-[11vw] max-w-full break-words leading-[0.8] font-black tracking-tighter text-white transition-colors duration-500 group-hover:text-blue-600 mix-blend-difference"
                     >
                         hello@daffa.dev
                     </a>
                     <div className="h-[2px] w-0 bg-blue-600 mt-4 transition-all duration-700 group-hover:w-full" />
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border-t border-white/5 pt-12 text-[10px] font-mono uppercase tracking-widest text-white/40">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 border-t border-white/5 pt-12 text-[10px] font-mono uppercase tracking-widest text-white/40">
                     <div className="space-y-4">
                         <span className="block text-white">Sitemap</span>
                         <nav className="flex flex-col gap-2">
@@ -91,7 +91,7 @@ export default function Footer({ onScrollTo }: FooterProps) {
 
             <div className="mt-20 w-full overflow-hidden border-t border-white/5 py-4 bg-white/[0.02]">
                 <motion.div
-                    className="flex whitespace-nowrap gap-12 text-[100px] md:text-[150px] font-black text-white/[0.03] leading-none select-none"
+                    className="flex whitespace-nowrap gap-12 text-[60px] sm:text-[80px] md:text-[100px] lg:text-[150px] font-black text-white/[0.03] leading-none select-none"
                     animate={{ x: [0, -1000] }}
                     transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
                 >

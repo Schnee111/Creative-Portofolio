@@ -1,35 +1,56 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { expertiseData } from '@/config/expertise'
 
 export default function ExpertiseColumns() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Mobile: tap to toggle, Desktop: hover
+  const handleInteraction = (index: number) => {
+    if (isMobile) {
+      setHoveredIndex(hoveredIndex === index ? null : index)
+    } else {
+      setHoveredIndex(index)
+    }
+  }
 
   return (
-    // FIX GAP: Pakai h-screen (tinggi layar penuh) atau min-h-[80vh]
-    // w-full agar mengisi lebar container
-    <div className="h-screen w-full flex overflow-hidden bg-black border-y border-white/5">
+    <div className="flex flex-col md:flex-row md:h-screen w-full bg-black border-y border-white/5">
       {expertiseData.map((item, i) => (
         <motion.div
           key={item.id}
-          onMouseEnter={() => setHoveredIndex(i)}
-          onMouseLeave={() => setHoveredIndex(null)}
+          onClick={() => handleInteraction(i)}
+          onMouseEnter={() => !isMobile && setHoveredIndex(i)}
+          onMouseLeave={() => !isMobile && setHoveredIndex(null)}
           animate={{
-            // Logic lebar yang lebih responsif
-            width: hoveredIndex === i ? '55%' : hoveredIndex === null ? '25%' : '15%'
+            // Mobile: height animation, Desktop: width animation
+            height: isMobile ? (hoveredIndex === i ? '60vh' : '80px') : 'auto',
+            width: !isMobile ? (hoveredIndex === i ? '55%' : hoveredIndex === null ? '25%' : '15%') : '100%'
           }}
           transition={{
             duration: 0.8,
             ease: [0.22, 1, 0.36, 1]
           }}
-          className="relative h-full border-r border-white/5 flex flex-col group cursor-pointer overflow-hidden bg-[#050505]"
+          className="relative w-full md:w-auto md:h-full min-h-[80px] md:min-h-0 border-b md:border-b-0 md:border-r border-white/5 flex flex-col group cursor-pointer overflow-hidden bg-[#050505]"
         >
-          {/* 1. BACKGROUND IMAGE (Parallax Zoom) */}
+          {/* Background Image */}
           <motion.div
             className="absolute inset-0 z-0 overflow-hidden"
-            animate={{ opacity: hoveredIndex === i ? 0.6 : 0.1 }} // Sedikit opacity saat idle agar tidak mati total
+            animate={{ opacity: hoveredIndex === i ? 0.6 : 0.1 }}
             transition={{ duration: 0.5 }}
           >
             <motion.img
@@ -42,33 +63,31 @@ export default function ExpertiseColumns() {
               transition={{ duration: 1.5 }}
               className="w-full h-full object-cover"
             />
-            {/* Gradient Overlay yang menyatu dengan hitam */}
             <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black`} />
             <div className={`absolute inset-0 bg-gradient-to-t ${item.color} via-transparent to-transparent opacity-50`} />
           </motion.div>
 
-          {/* 2. VERTICAL LABEL (Saat Tertutup) */}
-          <div className="absolute top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          {/* Vertical Label (Collapsed State) */}
+          <div className="absolute top-6 md:top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
             <motion.div
               animate={{
                 opacity: hoveredIndex === i ? 0 : 1,
                 y: hoveredIndex === i ? -20 : 0
               }}
               transition={{ duration: 0.4 }}
-              className="flex flex-col items-center gap-8"
+              className="flex flex-col md:flex-col items-center gap-4 md:gap-8"
             >
               <span className="text-blue-500 font-mono text-[9px] tracking-widest">0{i + 1}</span>
-              <h3 className="[writing-mode:vertical-lr] text-white/30 uppercase font-black tracking-[0.3em] text-sm md:text-base">
+              <h3 className="md:[writing-mode:vertical-lr] text-white/30 uppercase font-black tracking-[0.3em] text-xs md:text-sm lg:text-base">
                 {item.subtitle}
               </h3>
             </motion.div>
           </div>
 
-          {/* 3. EXPANDED CONTENT (Saat Terbuka) */}
-          <div className="mt-auto h-full w-full flex flex-col justify-end p-8 md:p-16 relative z-30">
-            {/* Wrapper konten dengan lebar tetap agar teks tidak geser-geser */}
+          {/* Expanded Content */}
+          <div className="mt-auto h-full w-full flex flex-col justify-end p-6 sm:p-8 md:p-12 lg:p-16 relative z-30">
             <motion.div
-              className="w-[40vw] min-w-[300px] flex flex-col items-start"
+              className="w-full md:w-[40vw] md:min-w-[300px] flex flex-col items-start"
               animate={{
                 opacity: hoveredIndex === i ? 1 : 0,
                 x: hoveredIndex === i ? 0 : 20,
@@ -77,27 +96,27 @@ export default function ExpertiseColumns() {
               transition={{ duration: 0.5, delay: hoveredIndex === i ? 0.1 : 0 }}
             >
               {/* Header */}
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4 mb-3 md:mb-4">
                 <span className="text-blue-500 font-mono text-[9px] tracking-[0.4em] uppercase">
                   {item.subtitle}
                 </span>
                 <div className="h-[1px] w-8 bg-blue-500/50" />
               </div>
 
-              {/* Title Besar */}
-              <h4 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tighter leading-[0.9]">
+              {/* Title */}
+              <h4 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-4 md:mb-6 uppercase tracking-tighter leading-[0.9]">
                 {item.title}
               </h4>
 
               {/* Description */}
-              <p className="text-white/50 text-sm md:text-base max-w-md mb-8 leading-relaxed font-light border-l border-white/10 pl-4">
+              <p className="text-white/50 text-xs sm:text-sm md:text-base max-w-md mb-6 md:mb-8 leading-relaxed font-light border-l border-white/10 pl-4">
                 {item.desc}
               </p>
 
               {/* Skills Tags */}
               <div className="flex flex-wrap gap-2">
                 {item.skills.map(skill => (
-                  <span key={skill} className="text-[9px] border border-white/10 px-3 py-1.5 rounded text-white/60 uppercase tracking-wider bg-white/[0.03]">
+                  <span key={skill} className="text-[10px] sm:text-xs border border-white/10 px-3 py-1.5 rounded text-white/60 uppercase tracking-wider bg-white/[0.03]">
                     {skill}
                   </span>
                 ))}
@@ -105,8 +124,8 @@ export default function ExpertiseColumns() {
             </motion.div>
           </div>
 
-          {/* 4. DECORATIVE ID (Background) */}
-          <div className="absolute top-8 right-8 text-white/[0.03] font-black text-8xl pointer-events-none select-none">
+          {/* Decorative ID */}
+          <div className="absolute top-4 md:top-8 right-4 md:right-8 text-white/[0.03] font-black text-6xl md:text-8xl pointer-events-none select-none">
             {item.id}
           </div>
 
