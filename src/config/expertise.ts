@@ -11,38 +11,38 @@ export interface ExpertiseItem {
 export const expertiseData: ExpertiseItem[] = [
     {
         id: '01',
-        title: 'Neural Link',
-        subtitle: 'AI & VISION',
-        skills: ['NLP Transformer', 'YOLOv8', 'Deep Learning'],
-        desc: 'Developing intelligent systems specializing in Natural Language Processing and Computer Vision.',
+        title: 'Neural Core',
+        subtitle: 'AI & DATA SCIENCE',
+        skills: ['TensorFlow', 'Deep Learning', 'Computer Vision'],
+        desc: 'Building intelligent systems with Transfer Learning, Deep RL agents, and NLP architectures for computer vision and predictive modeling.',
         img: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200',
         color: 'from-blue-600/20'
     },
     {
         id: '02',
-        title: 'System Arch',
-        subtitle: 'WEB & CHAIN',
-        skills: ['Next.js 15', 'Blockchain', 'Supabase'],
-        desc: 'Building robust architectures for modern web and decentralized export supply chains.',
-        img: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1200',
-        color: 'from-indigo-600/20'
+        title: 'System Forge',
+        subtitle: 'BACKEND & CLOUD',
+        skills: ['Node.js', 'FastAPI', 'Docker'],
+        desc: 'Architecting scalable backend systems with Express.js, Spring Boot, and cloud services including AWS, MongoDB, and PostgreSQL.',
+        img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200',
+        color: 'from-emerald-600/20'
     },
     {
         id: '03',
-        title: 'Data Logic',
-        subtitle: 'ANALYTICS',
-        skills: ['Big Data', 'Statistics', 'Orange Mining'],
-        desc: 'Extracting meaningful insights from complex datasets to drive data-driven decision making.',
-        img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200',
-        color: 'from-cyan-600/20'
+        title: 'Pixel Matrix',
+        subtitle: 'FRONTEND & CREATIVE',
+        skills: ['React', 'Next.js', 'Three.js'],
+        desc: 'Crafting immersive web experiences with Framer Motion, GSAP animations, and R3F for visually stunning data-driven interfaces.',
+        img: 'https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1200',
+        color: 'from-violet-600/20'
     },
     {
         id: '04',
-        title: 'Human Side',
-        subtitle: 'PERSONAL',
-        skills: ['Piano', 'Manhwa Reader', 'E-Business'],
-        desc: 'Exploring creative depths through music, storytelling, and digital business strategies.',
-        img: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=1200',
-        color: 'from-slate-600/20'
+        title: 'Chain Link',
+        subtitle: 'BLOCKCHAIN & IoT',
+        skills: ['Hyperledger', 'Go', 'Cassandra'],
+        desc: 'Developing decentralized networks with Hyperledger Fabric chaincode and distributed systems for IoT sensor data pipelines.',
+        img: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1200',
+        color: 'from-amber-600/20'
     }
 ]
