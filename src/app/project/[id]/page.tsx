@@ -5,8 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import gsap from 'gsap'
 import { projects } from '@/config/projects'
-import ProjectMedia from '@/components/dashboard/project/ProjectMedia'
-import ProjectBridge from '@/components/dashboard/project/ProjectBridge'
+import SectionRenderer from '@/components/project/SectionRenderer'
 import { useHorizontalScroll } from '@/hooks/useHorizontalScroll'
 
 export default function ProjectDetail() {
@@ -47,7 +46,6 @@ export default function ProjectDetail() {
       })
   }
 
-  // Use custom horizontal scroll hook
   const { scrollContainerRef, pullProgress } = useHorizontalScroll({
     mounted,
     nextProject,
@@ -128,8 +126,8 @@ export default function ProjectDetail() {
 
         <nav className="fixed top-0 w-full px-8 py-8 flex justify-between items-start z-[350] pointer-events-none mix-blend-difference">
           <div className="flex flex-col gap-1">
-            <span className="text-white/50 text-[9px] font-mono tracking-widest uppercase">Project</span>
-            <h2 className="text-white text-sm font-bold tracking-widest uppercase">{currentProject.title}</h2>
+            <span className="text-white/50 text-[10px] font-mono tracking-widest uppercase">Project</span>
+            <h2 className="text-white text-xl font-bold tracking-widest uppercase">{currentProject.title}</h2>
           </div>
           <Link href="/dashboard" className="pointer-events-auto group flex flex-col items-end gap-1">
             <span className="text-[9px] font-mono text-white/50 group-hover:text-white transition-colors tracking-widest uppercase">Back</span>
@@ -144,59 +142,22 @@ export default function ProjectDetail() {
 
         <div
           ref={scrollContainerRef}
-          className="flex-1 w-full md:overflow-y-hidden md:overflow-x-auto flex flex-col md:flex-row hide-scrollbar relative z-10"
+          className="flex-1 w-full md:overflow-hidden flex flex-col md:flex-row hide-scrollbar relative z-10 md:touch-none"
         >
-          {/* Layout Horizontal */}
           <div className="flex flex-col md:flex-row h-auto md:h-full w-full md:min-w-max items-center pt-24 md:pt-0 pl-0 md:pl-0 gap-y-20 md:gap-x-[10vw]">
 
-            {/* 1. TITLE & INTRO */}
-            <section className="w-full md:w-[35vw] flex-shrink-0 px-6 md:px-16 flex flex-col justify-center h-auto md:h-full relative">
-              <div className="relative z-10">
-                <span className="text-blue-500 font-mono text-[9px] tracking-[0.4em] uppercase block mb-8">00 // Overview</span>
-                <p className="text-2xl md:text-3xl text-white/90 font-light leading-relaxed tracking-wide mb-12">
-                  {currentProject.desc}
-                </p>
-
-                <div className="grid grid-cols-2 gap-8 border-t border-white/5 pt-8 opacity-60">
-                  <div>
-                    <span className="text-[9px] text-white/40 uppercase block mb-2 font-mono tracking-widest">Client</span>
-                    <span className="text-[11px] text-white uppercase tracking-wider">Confidential</span>
-                  </div>
-                  <div>
-                    <span className="text-[9px] text-white/40 uppercase block mb-2 font-mono tracking-widest">Stack</span>
-                    <span className="text-[11px] text-white uppercase tracking-wider">{currentProject.tech}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 2. MAIN IMAGE */}
-            <ProjectMedia src={currentProject.mainImage} type="full" index={1} />
-
-            {/* 3. TEXT SECTION */}
-            {currentProject.sections[0] && (
-              <div className="w-[85vw] md:w-[25vw] flex-shrink-0 px-4 flex items-center justify-center">
-                <div className="text-left">
-                  <span className="text-blue-500 font-mono text-[9px] mb-4 block tracking-widest">01 // Concept</span>
-                  <p className="text-white/60 text-sm font-light leading-7">{currentProject.sections[0].content}</p>
-                </div>
-              </div>
-            )}
-
-            {/* 4. GALLERY */}
-            {currentProject.gallery.map((img, i) => (
-              <ProjectMedia
-                key={i}
-                src={img.url}
-                type={i % 2 === 0 ? 'tall' : 'wide'}
-                index={i + 2}
+            {/* Dynamic Sections */}
+            {currentProject.sections.map((section, index) => (
+              <SectionRenderer
+                key={section.id}
+                section={section}
+                project={currentProject}
+                index={index}
+                nextProject={nextProject}
+                pullProgress={pullProgress}
               />
             ))}
 
-            {/* 5. BRIDGE (FULL HEIGHT & SEAMLESS) */}
-            <ProjectBridge nextProject={nextProject} pullProgress={pullProgress} />
-
-            {/* NO SPACER AT THE END - Bridge is the end */}
           </div>
         </div>
 
