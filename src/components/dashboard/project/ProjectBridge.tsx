@@ -7,6 +7,13 @@ interface ProjectBridgeProps {
     pullProgress: number
 }
 
+const getMainImage = (project: Project): string => {
+  const imageSection = project.sections.find(
+    s => s.type === 'image-full' || s.type === 'image-wide' || s.type === 'image-tall'
+  )
+  return imageSection && 'src' in imageSection ? imageSection.src : ''
+}
+
 export default function ProjectBridge({ nextProject, pullProgress }: ProjectBridgeProps) {
     if (!nextProject) return null
 
@@ -16,7 +23,7 @@ export default function ProjectBridge({ nextProject, pullProgress }: ProjectBrid
         >
             {/* Image BG (Redup) */}
             <div className="absolute inset-0 opacity-40 transition-all duration-1000">
-                <img src={nextProject.mainImage} className="w-full h-full object-cover" alt="" />
+                <img src={getMainImage(nextProject)} className="w-full h-full object-cover" alt="" />
             </div>
 
             {/* Content Center */}
