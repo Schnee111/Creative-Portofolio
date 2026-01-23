@@ -32,11 +32,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     <ReactLenis
       root
       options={{
-        lerp: isMobile ? 0.5 : 0.1,
-        duration: 1.5,
+        lerp: isMobile ? 1 : 0.125,
+        // duration: 1.5,
         smoothWheel: true,
         wheelMultiplier: 0.8,
-        touchMultiplier: 1,
+        touchMultiplier: 1.2,
         infinite: false,
         prevent: (node: any) => node.classList.contains('no-smooth-scroll'),
         overscroll: false,
