@@ -8,8 +8,8 @@ export default function CustomCursor() {
   // State baru untuk mendeteksi apakah perangkat adalah Desktop
   const [isDesktop, setIsDesktop] = useState(false)
   
-  const cursorX = useSpring(0, { stiffness: 800, damping: 35 })
-  const cursorY = useSpring(0, { stiffness: 800, damping: 35 })
+  const cursorX = useSpring(0, { stiffness: 5000, damping: 60 })
+  const cursorY = useSpring(0, { stiffness: 5000, damping: 60 })
 
   useEffect(() => {
     // Fungsi pengecekan: Lebar layar > 768px dan tidak mendukung touch utama
@@ -67,7 +67,6 @@ export default function CustomCursor() {
     }
   }, [isDesktop]) // Masukkan isDesktop ke dependency agar listener dipasang ulang saat resize
 
-  // JIKA BUKAN DESKTOP, JANGAN RENDERING APAPUN
   if (!isDesktop) return null
 
   return (
@@ -81,8 +80,8 @@ export default function CustomCursor() {
         className="fixed top-0 left-0 w-6 h-6 border border-blue-500 rounded-full z-[998] pointer-events-none mix-blend-difference"
         style={{ x: cursorX, y: cursorY, translateX: '-50%', translateY: '-50%' }}
         animate={{
-          backgroundColor: isHovered ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0)",
-          scale: isHovered ? 1.3 : 1,
+          backgroundColor: isHovered ? "rgba(255, 255, 255, 0.25)" : "rgba(0, 0, 0, 0)",
+          scale: isHovered ? 1.5 : 1,
         }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       />
