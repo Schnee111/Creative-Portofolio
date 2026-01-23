@@ -97,7 +97,16 @@ export default function ProjectDetail() {
   if (!currentProject || !mounted) return null
 
   return (
-    <main ref={mainRef} className="fixed inset-0 h-screen w-screen bg-[#050505] overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200">
+    <main ref={mainRef} className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-screen bg-[#050505] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200">
+
+      {/* SVG Filter for Horizontal Motion Blur */}
+      <svg className="absolute w-0 h-0" aria-hidden="true">
+        <defs>
+          <filter id="motion-blur-x" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0,0" />
+          </filter>
+        </defs>
+      </svg>
 
       {/* Tirai Transisi Anti-Glitch (120vh) */}
       <div className="fixed top-1/2 left-0 w-full h-[100vh] -translate-y-1/2 z-[9999] pointer-events-none flex flex-col">
@@ -137,10 +146,10 @@ export default function ProjectDetail() {
 
         <div
           ref={scrollContainerRef}
-          className="flex-1 w-full overflow-y-auto md:overflow-y-hidden md:overflow-x-auto flex flex-col md:flex-row hide-scrollbar relative z-10"
+          className="flex-1 w-full md:overflow-y-hidden md:overflow-x-auto flex flex-col md:flex-row hide-scrollbar relative z-10"
         >
           {/* Layout Horizontal */}
-          <div className="flex flex-col md:flex-row h-auto md:h-full min-w-max items-center pt-32 md:pt-0 pl-0 md:pl-0 gap-y-32 md:gap-x-[10vw]">
+          <div className="flex flex-col md:flex-row h-auto md:h-full w-full md:min-w-max items-center pt-24 md:pt-0 pl-0 md:pl-0 gap-y-20 md:gap-x-[10vw]">
 
             {/* 1. TITLE & INTRO */}
             <section className="w-full md:w-[35vw] flex-shrink-0 px-6 md:px-16 flex flex-col justify-center h-auto md:h-full relative">
