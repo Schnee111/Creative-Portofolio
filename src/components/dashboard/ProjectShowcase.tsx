@@ -4,7 +4,15 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { projects } from '@/config/projects'
+import { projects, Project } from '@/config/projects'
+
+// Helper to get main image from sections
+const getMainImage = (project: Project): string => {
+  const imageSection = project.sections.find(
+    s => s.type === 'image-full' || s.type === 'image-wide' || s.type === 'image-tall'
+  )
+  return imageSection && 'src' in imageSection ? imageSection.src : ''
+}
 
 export default function ProjectShowcase() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
@@ -52,7 +60,7 @@ export default function ProjectShowcase() {
               className="absolute w-[600px] h-[400px] rounded-[1rem] overflow-hidden bg-white/5"
             >
               <Image
-                src={activeProject.mainImage}
+                src={getMainImage(activeProject)}
                 alt="Preview"
                 fill
                 className="object-cover"
@@ -100,7 +108,7 @@ export default function ProjectShowcase() {
                     {/* Mobile Thumbnail */}
                     <div className="md:hidden w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
                       <Image
-                        src={project.mainImage}
+                        src={getMainImage(project)}
                         alt={project.title}
                         width={80}
                         height={80}
