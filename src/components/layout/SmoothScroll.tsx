@@ -33,7 +33,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       root
       options={{
         lerp: isMobile ? 1 : 0.125,
-        // duration: 1.5,
         smoothWheel: true,
         wheelMultiplier: 0.8,
         touchMultiplier: 1.2,

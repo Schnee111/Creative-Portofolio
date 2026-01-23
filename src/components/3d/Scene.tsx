@@ -10,7 +10,7 @@ import * as THREE from 'three'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useRouter } from 'next/navigation'
 import { useControls, button } from 'leva'
-import { Perf } from 'r3f-perf'
+// import { Perf } from 'r3f-perf'
 
 const DEBUG_MODE = false;
 
@@ -112,7 +112,6 @@ function CameraHandler() {
 }
 
 export default function Scene() {
-  // Hanya simpan state qualityTier
   // 0 = Low (No Effects), 1 = Medium (Light), 2 = High (Full)
   const [qualityTier, setQualityTier] = useState(1)
 
@@ -162,12 +161,6 @@ export default function Scene() {
             shadow-mapSize={[512, 512]}
             shadow-bias={-0.0001}
           />
-
-          {/* <pointLight 
-              position={[-3, 0, -2]} 
-              intensity={2} 
-              color="#4c6ef5" 
-            /> */}
 
           <pointLight
             position={[-0.2, 0.3, 0.6]}

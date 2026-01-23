@@ -99,7 +99,6 @@ export default function ProjectDetail() {
   return (
     <main ref={mainRef} className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-screen bg-[#050505] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200">
 
-      {/* SVG Filter for Horizontal Motion Blur */}
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
           <filter id="motion-blur-x" x="-50%" y="-50%" width="200%" height="200%">
@@ -108,7 +107,6 @@ export default function ProjectDetail() {
         </defs>
       </svg>
 
-      {/* Tirai Transisi Anti-Glitch (120vh) */}
       <div className="fixed top-1/2 left-0 w-full h-[100vh] -translate-y-1/2 z-[9999] pointer-events-none flex flex-col">
         {[...Array(3)].map((_, i) => (
           <div

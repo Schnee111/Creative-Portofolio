@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'plus.unsplash.com', // Kadang unsplash pakai domain ini juga
+        hostname: 'plus.unsplash.com',
         pathname: '**',
       },
     ],
