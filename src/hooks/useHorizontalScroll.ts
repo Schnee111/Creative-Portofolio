@@ -26,8 +26,12 @@ export function useHorizontalScroll({
         if (!mounted) return
 
         const onWheel = (e: WheelEvent) => {
-            if (isScrollLocked) {
+            // Block ALL wheel events on desktop to prevent native scrolling
+            if (window.innerWidth >= 768) {
                 e.preventDefault()
+            }
+
+            if (isScrollLocked) {
                 return
             }
 
@@ -39,14 +43,17 @@ export function useHorizontalScroll({
             const maxScroll = el.scrollWidth - el.clientWidth
             if (maxScroll <= 0) return
 
+            // Combine deltaY and deltaX for touchpad support
+            // Touchpad horizontal swipe uses deltaX, mouse wheel uses deltaY
+            const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+
             // === LOGIC PULL (Tarik) ===
             const isAtEnd = currentScrollRef.current >= maxScroll - 10;
-            const isPullingNext = e.deltaY > 0;
+            const isPullingNext = delta > 0;
 
             if (isAtEnd && isPullingNext) {
-                e.preventDefault();
                 // Berikan resistance (tahanan) agar tarikan terasa berat
-                bufferRef.current += e.deltaY * 0.5;
+                bufferRef.current += delta * 0.5;
                 const progress = Math.min(100, (bufferRef.current / 600) * 100);
                 setPullProgress(progress);
 
@@ -61,31 +68,19 @@ export function useHorizontalScroll({
                 }
 
                 // === PHYSICS ENGINE (Lusion Feel) ===
-                if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-                    e.preventDefault()
-
-                    let delta = e.deltaY;
-
-                    // === 1. CONTROLLED SCROLL DISTANCE ===
-                    // Base 0.5 for precision.
-                    // Strict Cap 150px to prevent "too far" movement.
-                    let step = delta * 0.8;
-                    const maxStep = 150;
-                    if (Math.abs(step) > maxStep) {
-                        step = Math.sign(step) * maxStep;
-                    }
-
-                    targetScrollRef.current += step
-                    targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current, maxScroll))
-
-                    // === 2. DECOUPLED VISUAL VELOCITY ===
-                    // Calculate "Visual Speed" separately for explosive feeling.
-                    // This allows Skew/Blur to react to violent flicks even if distance is capped.
-                    const rawSpeed = Math.abs(delta);
-                    const visualBoost = 1 + (rawSpeed * 0.2);
-                    // Update visual velocity target (decay handled in loop)
-                    visualVelocityRef.current = delta * visualBoost;
+                let step = delta * 0.8;
+                const maxStep = 150;
+                if (Math.abs(step) > maxStep) {
+                    step = Math.sign(step) * maxStep;
                 }
+
+                targetScrollRef.current += step
+                targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current, maxScroll))
+
+                // === DECOUPLED VISUAL VELOCITY ===
+                const rawSpeed = Math.abs(delta);
+                const visualBoost = 1 + (rawSpeed * 0.2);
+                visualVelocityRef.current = delta * visualBoost;
             }
         }
 
@@ -124,7 +119,11 @@ export function useHorizontalScroll({
                     visualVelocityRef.current = 0;
                 }
 
-                scrollContainerRef.current.scrollLeft = currentScrollRef.current
+                // Only update scrollLeft if there's meaningful movement (prevents micro-vibration)
+                const scrollDiff = Math.abs(scrollContainerRef.current.scrollLeft - currentScrollRef.current);
+                if (scrollDiff > 0.5) {
+                    scrollContainerRef.current.scrollLeft = currentScrollRef.current
+                }
 
                 const max = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth
                 const progress = max > 0 ? (currentScrollRef.current / max) * 100 : 0
