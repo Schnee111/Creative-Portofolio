@@ -20,6 +20,7 @@ export function useHorizontalScroll({
     const currentScrollRef = useRef(0)
     const bufferRef = useRef(0)
     const animationFrameRef = useRef<number | null>(null)
+    const visualVelocityRef = useRef(0) // Store decoupled velocity
 
     useEffect(() => {
         if (!mounted) return
@@ -63,17 +64,27 @@ export function useHorizontalScroll({
                 if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
                     e.preventDefault()
 
-                    // 1. CLAMPING: Batasi kecepatan maksimal scroll per frame
                     let delta = e.deltaY;
-                    if (Math.abs(delta) > 100) {
-                        delta = Math.sign(delta) * 100;
+
+                    // === 1. CONTROLLED SCROLL DISTANCE ===
+                    // Base 0.5 for precision.
+                    // Strict Cap 150px to prevent "too far" movement.
+                    let step = delta * 0.8;
+                    const maxStep = 150;
+                    if (Math.abs(step) > maxStep) {
+                        step = Math.sign(step) * maxStep;
                     }
 
-                    // 2. MULTIPLIER: Seberapa jauh target bergerak per scroll
-                    targetScrollRef.current += delta * 1.5
-
-                    // Clamp target agar tidak keluar batas
+                    targetScrollRef.current += step
                     targetScrollRef.current = Math.max(0, Math.min(targetScrollRef.current, maxScroll))
+
+                    // === 2. DECOUPLED VISUAL VELOCITY ===
+                    // Calculate "Visual Speed" separately for explosive feeling.
+                    // This allows Skew/Blur to react to violent flicks even if distance is capped.
+                    const rawSpeed = Math.abs(delta);
+                    const visualBoost = 1 + (rawSpeed * 0.2);
+                    // Update visual velocity target (decay handled in loop)
+                    visualVelocityRef.current = delta * visualBoost;
                 }
             }
         }
@@ -81,8 +92,36 @@ export function useHorizontalScroll({
         const smoothLoop = () => {
             if (scrollContainerRef.current && window.innerWidth >= 768) {
                 if (!isScrollLocked) {
-                    // === 3. LERP FACTOR (Kunci Kehalusan) ===
-                    currentScrollRef.current += (targetScrollRef.current - currentScrollRef.current) * 0.06
+                    const distance = Math.abs(targetScrollRef.current - currentScrollRef.current);
+                    const dynamicLerp = Math.min(0.5, 0.05 + (distance / 1000));
+
+                    currentScrollRef.current += (targetScrollRef.current - currentScrollRef.current) * dynamicLerp
+
+                    const actualDiff = targetScrollRef.current - currentScrollRef.current;
+
+                    visualVelocityRef.current *= 0.5;
+
+                    const effectVelocity = actualDiff
+
+                    scrollContainerRef.current.style.transform = ``
+
+                    const absVel = Math.abs(effectVelocity);
+                    const blurX = Math.max(0, Math.min(8, (absVel - 20) * 0.12));
+                    const blurY = 0.5;
+
+                    const svgFilter = document.getElementById('motion-blur-x');
+                    if (svgFilter) {
+                        const feBlur = svgFilter.querySelector('feGaussianBlur');
+                        if (feBlur) {
+                            feBlur.setAttribute('stdDeviation', `${blurX},${blurY}`);
+                        }
+                    }
+
+                    scrollContainerRef.current.style.filter = blurX > 0 ? `url(#motion-blur-x)` : ``
+                } else {
+                    scrollContainerRef.current.style.transform = ``
+                    scrollContainerRef.current.style.filter = ``
+                    visualVelocityRef.current = 0;
                 }
 
                 scrollContainerRef.current.scrollLeft = currentScrollRef.current
