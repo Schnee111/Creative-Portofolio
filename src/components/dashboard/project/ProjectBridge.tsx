@@ -19,10 +19,10 @@ export default function ProjectBridge({ nextProject, pullProgress }: ProjectBrid
 
     return (
         <section
-            className="w-[90vw] md:w-[30vw] h-[60vh] md:h-screen flex-shrink-0 relative overflow-hidden group bg-black border-l border-white/5"
+            className="w-screen md:w-[20vw] h-[20vh] md:h-screen flex-shrink-0 relative overflow-hidden group bg-black"
         >
             {/* Image BG (Redup) */}
-            <div className="absolute inset-0 opacity-40 transition-all duration-1000">
+            <div className="absolute inset-0 opacity-20 blur-[3px] transition-all duration-1000">
                 <img src={getMainImage(nextProject)} className="w-full h-full object-cover" alt="" />
             </div>
 
