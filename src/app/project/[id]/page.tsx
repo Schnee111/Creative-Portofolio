@@ -95,11 +95,15 @@ export default function ProjectDetail() {
   if (!currentProject || !mounted) return null
 
   return (
-    <main ref={mainRef} className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-full max-w-[100vw] bg-[#050505] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200">
+    <main
+      ref={mainRef}
+      style={{ backgroundColor: currentProject.bgcolor || '#050505', transition: 'background-color 1s ease' }}
+      className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-full max-w-[100vw] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200"
+    >
 
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
-          <filter id="motion-blur-x" x="-50%" y="-50%" width="200%" height="200%">
+          <filter id="motion-blur-x" x="-25%" y="-25%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="0,0" />
           </filter>
         </defs>
@@ -142,7 +146,7 @@ export default function ProjectDetail() {
 
         <div
           ref={scrollContainerRef}
-          className="flex-1 w-full overflow-y-auto overflow-x-hidden md:overflow-hidden flex flex-col md:flex-row hide-scrollbar relative z-10 md:touch-none"
+          className="flex-1 w-full overflow-y-auto overflow-x-hidden md:overflow-x-auto flex flex-col md:flex-row hide-scrollbar relative z-10 md:touch-none"
         >
           <div className="flex flex-col md:flex-row h-auto md:h-full w-full md:min-w-max items-center pt-24 md:pt-0 pl-0 md:pl-0 gap-y-20 md:gap-x-[10vw]">
 
@@ -155,6 +159,7 @@ export default function ProjectDetail() {
                 index={index}
                 nextProject={nextProject}
                 pullProgress={pullProgress}
+                scrollContainerRef={scrollContainerRef}
               />
             ))}
 

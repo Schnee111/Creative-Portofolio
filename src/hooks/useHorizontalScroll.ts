@@ -101,8 +101,8 @@ export function useHorizontalScroll({
                     scrollContainerRef.current.style.transform = ``
 
                     const absVel = Math.abs(effectVelocity);
-                    const blurX = Math.max(0, Math.min(8, (absVel - 20) * 0.12));
-                    const blurY = 0.5;
+                    const blurX = Math.max(0, Math.min(8, (absVel - 25) * 0.12));
+                    const blurY = 0.2;
 
                     const svgFilter = document.getElementById('motion-blur-x');
                     if (svgFilter) {
