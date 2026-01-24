@@ -16,7 +16,7 @@ export default function VideoSection({ section, index }: VideoSectionProps) {
     return (
         <motion.div
             ref={sectionRef}
-            className="w-full md:w-[50vw] h-[60vh] md:h-[70vh] flex-shrink-0 relative overflow-hidden rounded-[2rem] bg-[#0a0a0a]"
+            className="w-[90vw] md:w-[50vw] h-[60vh] md:h-[70vh] flex-shrink-0 relative overflow-hidden rounded-[2rem] bg-[#0a0a0a]"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}

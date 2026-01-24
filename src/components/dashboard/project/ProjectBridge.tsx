@@ -8,10 +8,10 @@ interface ProjectBridgeProps {
 }
 
 const getMainImage = (project: Project): string => {
-  const imageSection = project.sections.find(
-    s => s.type === 'image-full' || s.type === 'image-wide' || s.type === 'image-tall'
-  )
-  return imageSection && 'src' in imageSection ? imageSection.src : ''
+    const imageSection = project.sections.find(
+        s => s.type === 'image-full' || s.type === 'image-wide' || s.type === 'image-tall'
+    )
+    return imageSection && 'src' in imageSection ? imageSection.src : ''
 }
 
 export default function ProjectBridge({ nextProject, pullProgress }: ProjectBridgeProps) {
@@ -19,7 +19,7 @@ export default function ProjectBridge({ nextProject, pullProgress }: ProjectBrid
 
     return (
         <section
-            className="w-full md:w-[30vw] h-[60vh] md:h-screen flex-shrink-0 relative overflow-hidden group bg-black border-l border-white/5"
+            className="w-[90vw] md:w-[30vw] h-[60vh] md:h-screen flex-shrink-0 relative overflow-hidden group bg-black border-l border-white/5"
         >
             {/* Image BG (Redup) */}
             <div className="absolute inset-0 opacity-40 transition-all duration-1000">
