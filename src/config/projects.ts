@@ -7,7 +7,8 @@ export type SectionType =
   | 'text'
   | 'text-quote'
   | 'video'
-  | 'bridge';
+  | 'bridge'
+  | 'separator';
 
 export interface SectionBase {
   type: SectionType;
@@ -36,18 +37,26 @@ export interface VideoSection extends SectionBase {
   poster?: string;
 }
 
+export interface SeparatorSection extends SectionBase {
+  type: 'separator';
+  label?: string; // Optional text label "CHAPTER 01"
+}
+
 export interface BridgeSection extends SectionBase {
   type: 'bridge';
 }
 
-export type ProjectSection = IntroSection | ImageSection | TextSection | VideoSection | BridgeSection;
+export type ProjectSection = IntroSection | ImageSection | TextSection | VideoSection | BridgeSection | SeparatorSection;
 
+// ... (previous code)
 export interface Project {
   id: string;
   title: string;
   subtitle: string;
   tech: string;
   desc: string;
+  bgcolor?: string; // e.g. "#0f172a" or "bg-slate-900" (prefer hex for dynamic styles)
+  overlay?: 'leaf' | 'tech'; // Background overlay type
   sections: ProjectSection[];
 }
 
@@ -58,11 +67,15 @@ export const projects: Project[] = [
     subtitle: 'COMPUTER VISION',
     tech: 'YOLOv8 / ByteTrack / Python',
     desc: 'An AI-driven infrastructure monitoring system designed to identify asphalt defects and potholes in real-time with mAP 92% accuracy.',
+    bgcolor: '#0f172a', // Slate 900
+    overlay: 'tech',
     sections: [
       { type: 'intro', id: 'intro' },
       { type: 'image-wide', id: 'hero', src: 'https://plus.unsplash.com/premium_photo-1664547606209-fb31ec979c85?q=80&w=1470&auto=format&fit=crop' },
+      { type: 'separator', id: 'sep1', label: 'THE CHALLENGE' },
       { type: 'text', id: 't1', title: 'The Problem', content: 'Manual road inspections are labor-intensive, costly, and often overlook critical safety hazards in urban environments.' },
       { type: 'image-wide', id: 'img1', src: 'https://images.unsplash.com/photo-1621243804936-775306a8f2e3?auto=format&fit=crop&q=80&w=2000' },
+      { type: 'separator', id: 'sep2', label: 'EXECUTION' },
       { type: 'image-tall', id: 'img2', src: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=80&w=2000' },
       { type: 'text', id: 't2', title: 'AI Implementation', content: 'Leveraging YOLOv8 models optimized for edge devices to provide instantaneous damage classification and geolocating.' },
       { type: 'image-wide', id: 'img3', src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=2000' },
@@ -75,9 +88,12 @@ export const projects: Project[] = [
     subtitle: 'BLOCKCHAIN',
     tech: 'Hyperledger Fabric / Go / Docker',
     desc: 'An enterprise blockchain solution providing end-to-end transparency for coffee exports, securing the journey from farm to cup.',
+    bgcolor: '#271c19', // Dark Coffee
+    overlay: 'leaf',
     sections: [
       { type: 'intro', id: 'intro' },
       { type: 'image-wide', id: 'hero', src: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=2000' },
+      { type: 'separator', id: 'sep1', label: 'IMMUTABILITY' },
       { type: 'text', id: 't1', title: 'Immutable Logs', content: 'Every batch movement is recorded in a cryptographic ledger, eliminating data tampering and ensuring fair-trade verification.' },
       { type: 'image-wide', id: 'img1', src: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=2000' },
       { type: 'image-tall', id: 'img2', src: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=2000' },
@@ -92,6 +108,8 @@ export const projects: Project[] = [
     subtitle: 'FINTECH / AI',
     tech: 'XGBoost / Scikit-learn / FastAPI',
     desc: 'A high-performance fraud detection engine analyzing transaction patterns to mitigate financial risks through behavioral AI.',
+    bgcolor: '#052e16', // Dark Green
+    overlay: 'tech',
     sections: [
       { type: 'intro', id: 'intro' },
       { type: 'image-wide', id: 'hero', src: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=2000' },
@@ -109,10 +127,13 @@ export const projects: Project[] = [
     subtitle: 'NLP / DEEP LEARNING',
     tech: 'PyTorch / Transformers / Flask',
     desc: 'A pure Transformer-based conversational AI designed for natural language understanding and multi-turn dialogue coherence.',
+    bgcolor: '#2e0524', // Dark Purple
+    overlay: 'tech',
     sections: [
       { type: 'intro', id: 'intro' },
       { type: 'image-wide', id: 'hero', src: 'https://images.unsplash.com/photo-1674027444485-cec3da58eef4?q=80&w=1632&auto=format&fit=crop' },
       { type: 'text', id: 't1', title: 'Attention Mechanism', content: 'Implementing multi-head self-attention to capture long-range linguistic dependencies across complex user queries.' },
+      { type: 'separator', id: 'sep1', label: 'ARCHITECTURE' },
       { type: 'image-wide', id: 'img1', src: 'https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&q=80&w=2000' },
       { type: 'image-tall', id: 'img2', src: 'https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&q=80&w=2000' },
       { type: 'text', id: 't2', title: 'Contextual Tuning', content: 'Fine-tuning models on massive dialogue datasets to reduce hallucinations and improve response relevance.' },
@@ -126,6 +147,8 @@ export const projects: Project[] = [
     subtitle: 'BIG DATA / MINING',
     tech: 'Orange / Python / NLTK',
     desc: 'A systematic analysis of digital banking user reviews to categorize customer sentiment and identify key pain points.',
+    bgcolor: '#0f172a',
+    overlay: 'tech',
     sections: [
       { type: 'intro', id: 'intro' },
       { type: 'image-wide', id: 'hero', src: 'https://images.unsplash.com/photo-1535320903710-d993d3d77d29?auto=format&fit=crop&q=80&w=2000' },
@@ -143,6 +166,8 @@ export const projects: Project[] = [
     subtitle: 'BIOMETRICS',
     tech: 'CNN / OpenCV / React',
     desc: 'An advanced biometric security system utilizing hand-palm vein patterns for secure, contactless financial authentication.',
+    bgcolor: '#0f172a',
+    overlay: 'tech',
     sections: [
       { type: 'intro', id: 'intro' },
       { type: 'image-wide', id: 'hero', src: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&q=80&w=2000' },

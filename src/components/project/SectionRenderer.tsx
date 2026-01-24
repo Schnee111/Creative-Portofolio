@@ -5,6 +5,7 @@ import IntroSection from '@/components/project/sections/IntroSection'
 import ImageSection from '@/components/project/sections/ImageSection'
 import TextSection from '@/components/project/sections/TextSection'
 import VideoSection from '@/components/project/sections/VideoSection'
+import SeparatorSection from '@/components/project/sections/SeparatorSection'
 import ProjectBridge from '@/components/dashboard/project/ProjectBridge'
 
 interface SectionRendererProps {
@@ -13,6 +14,7 @@ interface SectionRendererProps {
     index: number
     nextProject?: Project | null
     pullProgress?: number
+    scrollContainerRef?: React.RefObject<HTMLDivElement | null>
 }
 
 export default function SectionRenderer({
@@ -20,11 +22,12 @@ export default function SectionRenderer({
     project,
     index,
     nextProject,
-    pullProgress
+    pullProgress,
+    scrollContainerRef
 }: SectionRendererProps) {
     switch (section.type) {
         case 'intro':
-            return <IntroSection project={project} />
+            return <IntroSection project={project} scrollContainerRef={scrollContainerRef} />
 
         case 'image-full':
         case 'image-wide':
@@ -37,6 +40,9 @@ export default function SectionRenderer({
 
         case 'video':
             return <VideoSection section={section} index={index} />
+
+        case 'separator':
+            return <SeparatorSection section={section} />
 
         case 'bridge':
             return <ProjectBridge nextProject={nextProject || null} pullProgress={pullProgress || 0} />

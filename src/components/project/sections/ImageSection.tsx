@@ -33,7 +33,7 @@ export default function ImageSection({ section, index }: ImageSectionProps) {
     return (
         <motion.div
             ref={containerRef}
-            className={`relative flex-shrink-0 group ${getSizeClasses()} overflow-hidden bg-[#0a0a0a] ${section.type === 'image-wide' ? 'md:ml-[5vw]' : ''}`}
+            className={`relative flex-shrink-0 group ${getSizeClasses()} overflow-hidden bg-[#0a0a0a] z-10 ${section.type === 'image-wide' ? 'md:ml-[5vw]' : ''}`}
             initial={{ scale: 0.9 }}
             animate={isInView ? { scale: 1 } : { scale: 0.8 }}
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
