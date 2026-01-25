@@ -48,7 +48,6 @@ export interface BridgeSection extends SectionBase {
 
 export type ProjectSection = IntroSection | ImageSection | TextSection | VideoSection | BridgeSection | SeparatorSection;
 
-// ... (previous code)
 export interface Project {
   id: string;
   title: string;

@@ -7,6 +7,7 @@ import gsap from 'gsap'
 import { projects } from '@/config/projects'
 import SectionRenderer from '@/components/project/SectionRenderer'
 import { useHorizontalScroll } from '@/hooks/useHorizontalScroll'
+import BackgroundOverlay from '@/components/ui/BackgroundOverlay'
 
 export default function ProjectDetail() {
   const { id } = useParams()
@@ -100,6 +101,7 @@ export default function ProjectDetail() {
       style={{ backgroundColor: currentProject.bgcolor || '#050505', transition: 'background-color 1s ease' }}
       className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-full max-w-[100vw] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200"
     >
+      <BackgroundOverlay type={currentProject.overlay} />
 
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
