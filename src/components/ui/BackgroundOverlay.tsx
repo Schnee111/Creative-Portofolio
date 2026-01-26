@@ -125,8 +125,6 @@ export default function BackgroundOverlay({ type }: BackgroundOverlayProps) {
     }
 
     // --- TECH CONFIGURATION ---
-    // "Cyber-Spine": A complex, segmented bio-digital structure
-    // Heavily blurred to act as a subtle, moving shadow background.
     if (type === 'tech') {
         const vertebraeCount = 18
         return (
