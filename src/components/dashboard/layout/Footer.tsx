@@ -40,10 +40,10 @@ export default function Footer({ onScrollTo }: FooterProps) {
 
                 <div className="mb-32 relative group">
                     <a
-                        href="mailto:hello@daffa.dev"
-                        className="block text-[8vw] sm:text-[9vw] md:text-[10vw] lg:text-[11vw] max-w-full break-words leading-[0.8] font-black tracking-tighter text-white transition-colors duration-500 group-hover:text-blue-600 mix-blend-difference"
+                        href="mailto:daffamaarif.dev@gmail.com"
+                        className="block text-[3vw] sm:text-[4vw] md:text-[5.5vw] lg:text-[6.9vw] max-w-full break-words leading-[0.8] font-black tracking-tighter text-white transition-colors duration-500 group-hover:text-blue-600 mix-blend-difference"
                     >
-                        hello@daffa.dev
+                        daffamaarif.dev@gmail.com
                     </a>
                     <div className="h-[2px] w-0 bg-blue-600 mt-4 transition-all duration-700 group-hover:w-full" />
                 </div>
@@ -63,9 +63,9 @@ export default function Footer({ onScrollTo }: FooterProps) {
                     <div className="space-y-4">
                         <span className="block text-white">Socials</span>
                         <nav className="flex flex-col gap-2">
-                            <a href="#" className="hover:text-blue-500 transition-colors">Instagram</a>
-                            <a href="#" className="hover:text-blue-500 transition-colors">LinkedIn</a>
-                            <a href="#" className="hover:text-blue-500 transition-colors">GitHub</a>
+                            <a href="https://www.instagram.com/nyx.zest_" className="hover:text-blue-500 transition-colors">Instagram</a>
+                            <a href="https://www.linkedin.com/in/muhammad-daffa-maarif-59a832235/" className="hover:text-blue-500 transition-colors">LinkedIn</a>
+                            <a href="https://github.com/Schnee111" className="hover:text-blue-500 transition-colors">GitHub</a>
                         </nav>
                     </div>
 
