@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  transpilePackages: ['three'], 
+  transpilePackages: ['three'],
   reactStrictMode: false,
   images: {
     remotePatterns: [
@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'projectmedia1.blob.core.windows.net',
         pathname: '**',
       },
     ],
