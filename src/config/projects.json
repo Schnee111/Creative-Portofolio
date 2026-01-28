@@ -1,0 +1,476 @@
+[
+  {
+    "id": "01",
+    "title": "RoadGuard Vision",
+    "subtitle": "COMPUTER VISION",
+    "tech": "YOLOv8 / ByteTrack / Streamlit / Folium",
+    "desc": "An AI-powered road damage detection system with real-time geolocating, multi-source video input, severity classification, and interactive mapping dashboard.",
+    "bgcolor": "#0f172a",
+    "overlay": "tech",
+    "sections": [
+      {
+        "type": "intro",
+        "id": "intro"
+      },
+      {
+        "type": "image-wide",
+        "id": "hero",
+        "src": "/01-roadguard-vision/66dbc034-4feb-41e8-9695-8e187b891e2b.jpg",
+        "alt": "RoadGuard Vision Dashboard"
+      },
+      {
+        "type": "separator",
+        "id": "sep1",
+        "label": "THE CHALLENGE"
+      },
+      {
+        "type": "text",
+        "id": "t1",
+        "title": "Infrastructure at Risk",
+        "content": "Manual road inspections are labor-intensive, costly, and often overlook critical safety hazards. Municipalities need automated, scalable solutions to monitor road conditions across urban environments."
+      },
+      {
+        "type": "separator",
+        "id": "sep2",
+        "label": "AI DETECTION"
+      },
+      {
+        "type": "text",
+        "id": "t2",
+        "title": "YOLOv8 + ByteTrack",
+        "content": "Leveraging YOLOv8 trained on RDD dataset for multi-class damage detection. ByteTrack algorithm with IoU-based matching prevents duplicate detections and tracks objects across frames."
+      },
+      {
+        "type": "video",
+        "id": "v",
+        "src": "/01-roadguard-vision/199641f1-2346-4b85-80c3-fb29b79c43d2.mp4"
+      },
+      {
+        "type": "text",
+        "id": "t3",
+        "title": "Interactive Mapping",
+        "content": "Streamlit-based dashboard with Folium integration for real-time mapping. Features include heatmaps, cluster markers, live statistics, and export to CSV/GeoJSON/KML formats for GIS applications."
+      },
+      {
+        "type": "image-wide",
+        "id": "img3",
+        "src": "/01-roadguard-vision/7182ce90-b81c-4d87-a185-992f8552a656.png",
+        "alt": "Detection Results with Bounding Boxes"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-91fe2acd",
+        "src": "/01-roadguard-vision/0ef09eee-44d6-4610-ad45-a8ff6aa6efe3.png",
+        "alt": "Detection Analysis"
+      },
+      {
+        "type": "separator",
+        "id": "sep3",
+        "label": "DASHBOARD"
+      },
+      {
+        "type": "text",
+        "id": "t4",
+        "title": "Severity Classification",
+        "content": "Detections are classified by severity: High (Pothole, Alligator Crack), Medium (Longitudinal/Transverse Crack), and Low (Lane Marking issues). Each detection is geolocated via integrated GPS system."
+      },
+      {
+        "type": "image-wide",
+        "id": "section-55c0d8cc",
+        "src": "/01-roadguard-vision/924cd2c6-da88-4ef1-8fda-21b50828dd85.png",
+        "alt": "Map Visualization"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-3120febf",
+        "src": "/01-roadguard-vision/4790f1b2-3d19-4b7d-964a-31536c2d61d6.png",
+        "alt": "Detection Stats"
+      },
+      {
+        "type": "separator",
+        "id": "sep4",
+        "label": "CONFIGURATION"
+      },
+      {
+        "type": "text",
+        "id": "t5",
+        "title": "Customizable Parameters",
+        "content": "Fine-tune detection with adjustable confidence thresholds, IoU settings, and GPS modes. Supports multiple video sources including file upload, webcam, RTSP streams, and browser camera via WebRTC."
+      },
+      {
+        "type": "image-tall",
+        "id": "section-c9cea66c",
+        "src": "/01-roadguard-vision/60e8e6c6-988b-4638-b827-37a1cd33dfe7.png",
+        "alt": "AI Parameter Config"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-678d2337",
+        "src": "/01-roadguard-vision/c72a9b7a-f2f5-44d5-857f-9d2065b1cb6c.png",
+        "alt": "History Page"
+      },
+      {
+        "type": "bridge",
+        "id": "bridge"
+      }
+    ]
+  },
+  {
+    "id": "02",
+    "title": "KopiChain Traceability",
+    "subtitle": "BLOCKCHAIN",
+    "tech": "Hyperledger Fabric / Go / React / Express.js",
+    "desc": "An enterprise blockchain solution for Indonesian coffee exports with full traceability, digital payments, and quality certification across 5 organizations.",
+    "bgcolor": "#271c19",
+    "overlay": "leaf",
+    "sections": [
+      {
+        "type": "intro",
+        "id": "intro"
+      },
+      {
+        "type": "image-wide",
+        "id": "hero",
+        "src": "/02-kopichain-traceability/ea989e7f-582f-4a94-90fa-33d2da65bc5c.jpg",
+        "alt": "Coffee Supply Chain Overview"
+      },
+      {
+        "type": "separator",
+        "id": "sep1",
+        "label": "THE CHALLENGE"
+      },
+      {
+        "type": "text",
+        "id": "t1",
+        "title": "Transparency Crisis",
+        "content": "Indonesian coffee exports lack traceability from farm to cup. Farmers receive unfair payments, quality data is unreliable, and stakeholders cannot verify the origin or handling of products."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-flow",
+        "src": "/02-kopichain-traceability/46dca10a-cbdb-4e43-bb06-ba11b719e131.png",
+        "alt": "Supply Chain Flow Diagram"
+      },
+      {
+        "type": "separator",
+        "id": "sep2",
+        "label": "MULTI-ORG ARCHITECTURE"
+      },
+      {
+        "type": "text",
+        "id": "t2",
+        "title": "5 Organizations, 1 Network",
+        "content": "Built on Hyperledger Fabric with five distinct organizations: Petani (Farmer), Logistik, Koperasi, Regulator, and Importir. Each has dedicated peers and endorsement policies requiring 3/5 consensus for validation."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-architecture",
+        "src": "/02-kopichain-traceability/62c5de6b-35cb-40f4-b67c-8a1342a87fbe.png",
+        "alt": "Hyperledger Fabric Network Architecture"
+      },
+      {
+        "type": "text",
+        "id": "t3",
+        "title": "Chaincode in Go",
+        "content": "Smart contracts handle batch registration, GPS-tracked checkpoints, cupping score QC, residue testing, export approval, and automated payment settlements with 80/20 farmer-cooperative splits."
+      },
+      {
+        "type": "image-wide",
+        "id": "section-432740c6",
+        "src": "/02-kopichain-traceability/72d743e6-f3df-4ff5-9aca-543864d5dbd5.png",
+        "alt": "settlement flow"
+      },
+      {
+        "type": "separator",
+        "id": "sep3",
+        "label": "FEATURES"
+      },
+      {
+        "type": "image-full",
+        "id": "img-dashboard",
+        "src": "/02-kopichain-traceability/3cdab9bc-ac82-4fbf-b86b-f40a164bcd7a.png",
+        "alt": "Supply Chain Dashboard"
+      },
+      {
+        "type": "text",
+        "id": "t4",
+        "title": "Full Traceability",
+        "content": "Track every batch from harvest to import with immutable records. GPS checkpoints, temperature monitoring, quality scores, and digital wallet transactions all recorded on-chain."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-tracking",
+        "src": "/02-kopichain-traceability/9f729ef3-74ac-4790-86b0-f39e64364297.png",
+        "alt": "Batch Tracking with Leaflet Maps"
+      },
+      {
+        "type": "image-tall",
+        "id": "section-f6e6efb5",
+        "src": "/02-kopichain-traceability/da0cbc43-cc3d-4321-8fd6-c55847647a09.png"
+      },
+      {
+        "type": "image-tall",
+        "id": "section-58829820",
+        "src": "/02-kopichain-traceability/7ac46ccd-73a5-4015-8a04-f489fcea8ede.png"
+      },
+      {
+        "type": "image-tall",
+        "id": "section-bd621e03",
+        "src": "/02-kopichain-traceability/443cef53-e351-4cd3-a20b-2eb10998d489.png"
+      },
+      {
+        "type": "separator",
+        "id": "sep4",
+        "label": "DATA SIMULATION"
+      },
+      {
+        "type": "text",
+        "id": "section-2d41e96f",
+        "title": "Web-Based Data Entry",
+        "content": "As a simulation project, all supply chain data is entered through the React dashboard. Each stakeholder (Farmer, Logistics, Cooperative, Regulator, Importer) has dedicated interfaces to record their activities on the blockchain."
+      },
+      {
+        "type": "image-wide",
+        "id": "section-f6844a6e",
+        "src": "/02-kopichain-traceability/7ace816f-f38c-4c90-b5a7-e55c7e28a0b5.png"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-b0d5fde6",
+        "src": "/02-kopichain-traceability/091c8c3f-ae66-49ed-83f7-edf45e877cdc.png"
+      },
+      {
+        "type": "bridge",
+        "id": "bridge"
+      }
+    ]
+  },
+  {
+    "id": "03",
+    "title": "ETL Stock Dashboard",
+    "subtitle": "DATA ENGINEERING",
+    "tech": "Airflow / Docker / MongoDB / Next.js / Python",
+    "desc": "A fully containerized ETL pipeline for Indonesian stock market data with real-time scraping, sentiment analysis, and interactive visualization dashboard.",
+    "bgcolor": "#0c1929",
+    "overlay": "tech",
+    "sections": [
+      {
+        "type": "intro",
+        "id": "intro"
+      },
+      {
+        "type": "image-wide",
+        "id": "hero",
+        "src": "/03-etl-stock-dashboard/e1c4716d-2a4c-456a-a248-3636977678d7.jpg",
+        "alt": "ETL Stock Dashboard Hero"
+      },
+      {
+        "type": "separator",
+        "id": "sep1",
+        "label": "THE CHALLENGE"
+      },
+      {
+        "type": "text",
+        "id": "t1",
+        "title": "Data Fragmentation",
+        "content": "Stock market data is scattered across multiple sources—IDX, financial news portals, and global exchanges. Manual collection is time-consuming and prone to inconsistencies."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-architecture",
+        "src": "/03-etl-stock-dashboard/2d26ad75-061b-4536-b85a-2021e65b09e2.png",
+        "alt": "System Architecture Diagram"
+      },
+      {
+        "type": "separator",
+        "id": "sep2",
+        "label": "THE SOLUTION"
+      },
+      {
+        "type": "text",
+        "id": "t2",
+        "title": "Automated ETL Pipeline",
+        "content": "Built a modular ETL system using Apache Airflow for orchestration. Each component—Extract, Transform, Load—runs in isolated Docker containers for scalability and fault tolerance."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-airflow",
+        "src": "/03-etl-stock-dashboard/ff1667a6-d69e-4356-840d-52872cea3a03.png",
+        "alt": "Airflow DAG Visualization"
+      },
+      {
+        "type": "text",
+        "id": "t3",
+        "title": "Multi-Source Extraction",
+        "content": "Scrapers pull data from IDX (Indonesian Stock Exchange), IQPlus (financial news with sentiment), and Yahoo Finance (global market data). All processes run on scheduled DAGs."
+      },
+      {
+        "type": "separator",
+        "id": "sep3",
+        "label": "THE DASHBOARD"
+      },
+      {
+        "type": "image-full",
+        "id": "img-dashboard",
+        "src": "/03-etl-stock-dashboard/843c396d-8735-44c6-abf2-7625b922bcc4.png",
+        "alt": "Stock Dashboard Main View"
+      },
+      {
+        "type": "text",
+        "id": "t4",
+        "title": "Real-Time Visualization",
+        "content": "Interactive Next.js dashboard displaying stock prices, historical trends, and news sentiment. Data served via FastAPI backend connected to MongoDB."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-charts",
+        "src": "/03-etl-stock-dashboard/da24abe6-313b-4f4a-ba6b-a82eb8390488.png",
+        "alt": "Interactive Stock Charts"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-charts-2",
+        "src": "/03-etl-stock-dashboard/7e706e7b-1263-45bd-9059-0118dd9a6cd3.png",
+        "alt": "charts-2"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-c2a3ac7",
+        "src": "/03-etl-stock-dashboard/40f75427-9c4d-4877-b6a9-059db121c9bc.png",
+        "alt": "report"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-799727b5",
+        "src": "/03-etl-stock-dashboard/8cfcd698-ed82-49c2-82ec-78dbc35418c6.png"
+      },
+      {
+        "type": "image-tall",
+        "id": "section-173c3ebf",
+        "src": "/03-etl-stock-dashboard/988a16d7-34f3-401f-a111-b25278d4b196.png"
+      },
+      {
+        "type": "bridge",
+        "id": "bridge"
+      }
+    ]
+  },
+  {
+    "id": "04",
+    "title": "Smart City Energy Monitor",
+    "subtitle": "IOT & BIG DATA",
+    "tech": "Spring Boot / Cassandra / Next.js / Python",
+    "desc": "An IoT-based energy monitoring system for multi-district urban areas with real-time visualization, sensor management, and time-series analytics powered by Apache Cassandra.",
+    "bgcolor": "#0a1f1a",
+    "overlay": "tech",
+    "sections": [
+      {
+        "type": "intro",
+        "id": "intro"
+      },
+      {
+        "type": "image-wide",
+        "id": "hero",
+        "src": "/04-smart-city-energy-monitor/90c57fd2-6950-4ad3-8ab7-d97bef4c1f6c.jpg",
+        "alt": "Smart City Dashboard Overview"
+      },
+      {
+        "type": "separator",
+        "id": "sep1",
+        "label": "THE VISION"
+      },
+      {
+        "type": "text",
+        "id": "t1",
+        "title": "Sustainable Development Goals",
+        "content": "Aligned with SDG 7 (Clean Energy) and SDG 11 (Sustainable Cities). The system enables cities to monitor, analyze, and optimize energy consumption across multiple districts in real-time."
+      },
+      {
+        "type": "image-full",
+        "id": "img-dashboard",
+        "src": "/04-smart-city-energy-monitor/a6a0b18b-fbc7-4558-81b9-26949feeda15.png"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-4d8ed9d0",
+        "src": "/04-smart-city-energy-monitor/6048c586-bb34-4676-b8df-9984df8979d3.png"
+      },
+      {
+        "type": "separator",
+        "id": "sep2",
+        "label": "ARCHITECTURE"
+      },
+      {
+        "type": "text",
+        "id": "t2",
+        "title": "Distributed System Design",
+        "content": "Built with Apache Cassandra for time-series data storage, Spring Boot REST API for backend services, and Next.js for the interactive dashboard. Python simulator generates realistic IoT sensor data."
+      },
+      {
+        "type": "image-tall",
+        "id": "img-architecture",
+        "src": "/04-smart-city-energy-monitor/2ccac5a7-aa9d-4158-940c-67cb928aeff0.png"
+      },
+      {
+        "type": "text",
+        "id": "t3",
+        "title": "Raw CQL Implementation",
+        "content": "Following the golden rule of no ORM—all database interactions use raw CQL via CqlSession and PreparedStatement for maximum performance and control over Cassandra queries."
+      },
+      {
+        "type": "separator",
+        "id": "sep3",
+        "label": "FEATURES"
+      },
+      {
+        "type": "image-full",
+        "id": "img-map",
+        "src": "/04-smart-city-energy-monitor/34e87f47-a840-4860-90f4-ab4251aad310.png",
+        "alt": "Interactive Sensor Map"
+      },
+      {
+        "type": "text",
+        "id": "t4",
+        "title": "Interactive Monitoring",
+        "content": "Real-time maps with sensor markers, district filtering, and status-based color coding. Analytics dashboard shows energy trends, solar vs grid distribution, and inter-district comparisons."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-analytics",
+        "src": "/04-smart-city-energy-monitor/f74e9c17-f2e9-457b-8081-4e1c3bb3dcb3.png",
+        "alt": "Analytics Dashboard"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-1f646492",
+        "src": "/04-smart-city-energy-monitor/3185c9cc-3bf7-46eb-81d0-2c5304d99aaa.png"
+      },
+      {
+        "type": "image-wide",
+        "id": "section-7d5818d0",
+        "src": "/04-smart-city-energy-monitor/8597cdea-f1a0-489d-8084-221c916ea909.png"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-sensors",
+        "src": "/04-smart-city-energy-monitor/40daf11e-9625-4454-93c0-51b28f3ea24e.png",
+        "alt": "Sensor CRUD Interface"
+      },
+      {
+        "type": "text",
+        "id": "t5",
+        "title": "Real-Time Data Simulation",
+        "content": "Since physical IoT sensors are not available, real-time sensor data is simulated using a Python-based data generator. The simulator produces realistic energy readings (kWh, voltage) with configurable intervals, mimicking actual sensor behavior across multiple districts."
+      },
+      {
+        "type": "image-wide",
+        "id": "section-553612f5",
+        "src": "/04-smart-city-energy-monitor/4237182e-08fc-4bec-b72e-d5dd68a4ecd9.png"
+      },
+      {
+        "type": "bridge",
+        "id": "bridge"
+      }
+    ]
+  }
+]
