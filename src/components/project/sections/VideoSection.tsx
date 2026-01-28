@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { VideoSection as VideoSectionType } from '@/config/projects'
 
@@ -10,8 +10,23 @@ interface VideoSectionProps {
 }
 
 export default function VideoSection({ section, index }: VideoSectionProps) {
-    const sectionRef = useRef(null)
+    const sectionRef = useRef<HTMLDivElement>(null)
+    const videoRef = useRef<HTMLVideoElement>(null)
     const isInView = useInView(sectionRef, { once: false, margin: "0px -10% 0px -10%" })
+
+    // Autoplay when in viewport, pause when out
+    useEffect(() => {
+        const video = videoRef.current
+        if (!video) return
+
+        if (isInView) {
+            video.play().catch(() => {
+                // Autoplay blocked by browser, silently ignore
+            })
+        } else {
+            video.pause()
+        }
+    }, [isInView])
 
     return (
         <motion.div
@@ -22,13 +37,15 @@ export default function VideoSection({ section, index }: VideoSectionProps) {
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
         >
             <video
+                ref={videoRef}
                 src={section.src}
                 poster={section.poster}
-                controls
+                loop
+                muted
+                playsInline
+                preload="metadata"
                 className="w-full h-full object-cover"
-            >
-                Your browser does not support the video tag.
-            </video>
+            />
         </motion.div>
     )
 }

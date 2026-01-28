@@ -126,7 +126,7 @@ export default function ProjectShowcase() {
 
                     {/* TITLE */}
                     <h2
-                      className={`text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-tighter leading-none transition-all duration-300 ${isHovered ? 'text-blue-500 opacity-100' : 'text-white opacity-20'
+                      className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tighter leading-none transition-all duration-300 ${isHovered ? 'text-blue-500 opacity-100' : 'text-white opacity-20'
                         }`}
                     >
                       {project.title}

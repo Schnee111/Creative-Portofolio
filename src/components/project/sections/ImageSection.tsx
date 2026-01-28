@@ -18,13 +18,13 @@ export default function ImageSection({ section, index }: ImageSectionProps) {
         switch (section.type) {
             case 'image-full':
                 // Truly full height - covers entire viewport
-                return 'w-[85vw] md:w-[60vw] h-screen rounded-[2rem]'
+                return 'w-[85vw] md:w-[85vw] h-screen'
             case 'image-wide':
                 // Normal size - landscape orientation
                 return 'w-[85vw] md:w-[60vw] h-[60vh] md:h-[65vh] rounded-[2rem]'
             case 'image-tall':
                 // Normal size - portrait orientation
-                return 'w-[85vw] md:w-[25vw] h-[60vh] md:h-[85vh] rounded-[2rem]'
+                return 'w-[85vw] md:w-[40vw] h-[60vh] md:h-[90vh] rounded-[2rem]'
             default:
                 return 'w-[85vw] md:w-[60vw] h-[60vh] md:h-[65vh] rounded-[2rem]'
         }
