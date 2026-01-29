@@ -6,7 +6,7 @@ import ImageSection from '@/components/project/sections/ImageSection'
 import TextSection from '@/components/project/sections/TextSection'
 import VideoSection from '@/components/project/sections/VideoSection'
 import SeparatorSection from '@/components/project/sections/SeparatorSection'
-import ProjectBridge from '@/components/dashboard/project/ProjectBridge'
+import ProjectBridge from '@/components/project/sections/ProjectBridge'
 
 interface SectionRendererProps {
     section: ProjectSection

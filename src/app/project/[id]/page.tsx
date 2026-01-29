@@ -101,7 +101,22 @@ export default function ProjectDetail() {
       style={{ backgroundColor: currentProject.bgcolor || '#050505', transition: 'background-color 1s ease' }}
       className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-full max-w-[100vw] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200"
     >
-      <BackgroundOverlay type={currentProject.overlay} />
+      <div className="hidden md:block">
+        <BackgroundOverlay type={currentProject.overlay} />
+      </div>
+
+
+      {/* Header - Outside contentRef to avoid transform/filter interference */}
+      <nav className="fixed top-0 left-0 w-full px-4 md:px-8 py-6 md:py-8 flex justify-between items-start z-[350] pointer-events-none mix-blend-difference">
+        <div className="flex flex-col gap-1">
+          <span className="text-white/50 text-[10px] font-mono tracking-widest uppercase">Project</span>
+          <h2 className="text-white text-xl font-bold tracking-widest uppercase">{currentProject.title}</h2>
+        </div>
+        <Link href="/dashboard" className="pointer-events-auto group flex flex-col items-end gap-1">
+          <span className="text-[9px] font-mono text-white/50 group-hover:text-white transition-colors tracking-widest uppercase">Back</span>
+          <div className="w-6 h-[1px] bg-white/20 group-hover:bg-white transition-colors" />
+        </Link>
+      </nav>
 
       <svg className="absolute w-0 h-0" aria-hidden="true">
         <defs>
@@ -130,17 +145,6 @@ export default function ProjectDetail() {
 
       <div ref={contentRef} className="h-full w-full flex flex-col">
 
-        <nav className="fixed top-0 w-full px-4 md:px-8 py-6 md:py-8 flex justify-between items-start z-[350] pointer-events-none mix-blend-difference">
-          <div className="flex flex-col gap-1">
-            <span className="text-white/50 text-[10px] font-mono tracking-widest uppercase">Project</span>
-            <h2 className="text-white text-xl font-bold tracking-widest uppercase">{currentProject.title}</h2>
-          </div>
-          <Link href="/dashboard" className="pointer-events-auto group flex flex-col items-end gap-1">
-            <span className="text-[9px] font-mono text-white/50 group-hover:text-white transition-colors tracking-widest uppercase">Back</span>
-            <div className="w-6 h-[1px] bg-white/20 group-hover:bg-white transition-colors" />
-          </Link>
-        </nav>
-
         <style jsx global>{`
           .hide-scrollbar::-webkit-scrollbar { display: none; }
           .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -150,7 +154,8 @@ export default function ProjectDetail() {
           ref={scrollContainerRef}
           className="flex-1 w-full overflow-y-auto overflow-x-hidden md:overflow-x-auto flex flex-col md:flex-row hide-scrollbar relative z-10 md:touch-none"
         >
-          <div className="flex flex-col md:flex-row h-auto md:h-full w-full md:min-w-max items-center pt-24 md:pt-0 pl-0 md:pl-0 gap-y-20 md:gap-x-[10vw]">
+          {/* Padding top to prevent header overlap on mobile */}
+          <div className="flex flex-col md:flex-row h-auto md:h-full w-full md:min-w-max items-center justify-center md:justify-start pt-20 md:pt-0 pl-0 md:pl-0 gap-y-20 md:gap-x-[10vw]">
 
             {/* Dynamic Sections */}
             {currentProject.sections.map((section, index) => (
