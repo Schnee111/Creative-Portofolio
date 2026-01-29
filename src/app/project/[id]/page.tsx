@@ -13,7 +13,10 @@ export default function ProjectDetail() {
   const { id } = useParams()
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
-  const [displayId, setDisplayId] = useState(id as string)
+  const [displayId, setDisplayId] = useState(() => {
+    const idx = projects.findIndex(p => p.id === id)
+    return idx >= 0 ? idx + 1 : 1
+  })
   const [isScrollLocked, setIsScrollLocked] = useState(true)
 
   const mainRef = useRef<HTMLDivElement>(null)
@@ -32,7 +35,8 @@ export default function ProjectDetail() {
     if (isNavigating.current || !nextProject) return
     isNavigating.current = true
     setIsScrollLocked(true)
-    setDisplayId(nextProject.id)
+    const nextIdx = projects.findIndex(p => p.id === nextProject.id)
+    setDisplayId(nextIdx >= 0 ? nextIdx + 1 : 1)
 
     const tl = gsap.timeline({
       onComplete: () => router.push(`/project/${nextProject.id}`)
@@ -56,7 +60,8 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     setMounted(true)
-    setDisplayId(id as string)
+    const idx = projects.findIndex(p => p.id === id)
+    setDisplayId(idx >= 0 ? idx + 1 : 1)
 
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollLeft = 0
@@ -136,7 +141,7 @@ export default function ProjectDetail() {
           >
             {i === 1 && (
               <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                <span className="text-[12vw] font-black text-white/10 uppercase italic tracking-tighter">{displayId}</span>
+                <span className="text-[12vw] font-black text-white/10 uppercase italic tracking-tighter">0{displayId}</span>
               </div>
             )}
           </div>
