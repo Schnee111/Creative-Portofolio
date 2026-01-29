@@ -58,6 +58,8 @@ export interface Project {
   desc: string;
   bgcolor?: string;
   overlay?: 'leaf' | 'tech';
+  github?: string;
+  demo?: string;
   sections: ProjectSection[];
 }
 

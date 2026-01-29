@@ -7,6 +7,7 @@
     "desc": "An AI-powered road damage detection system with real-time geolocating, multi-source video input, severity classification, and interactive mapping dashboard.",
     "bgcolor": "#0f172a",
     "overlay": "tech",
+    "github": "https://github.com/Schnee111/RoadGuard",
     "sections": [
       {
         "type": "intro",
@@ -123,6 +124,7 @@
     "desc": "An enterprise blockchain solution for Indonesian coffee exports with full traceability, digital payments, and quality certification across 5 organizations.",
     "bgcolor": "#271c19",
     "overlay": "leaf",
+    "github": "https://github.com/Schnee111/Chaincode-Supplychain-CoffeeExport",
     "sections": [
       {
         "type": "intro",
@@ -253,6 +255,7 @@
     "desc": "A fully containerized ETL pipeline for Indonesian stock market data with real-time scraping, sentiment analysis, and interactive visualization dashboard.",
     "bgcolor": "#0c1929",
     "overlay": "tech",
+    "github": "https://github.com/Schnee111/ETL-Stock-Dashboard",
     "sections": [
       {
         "type": "intro",
@@ -363,6 +366,8 @@
     "desc": "An IoT-based energy monitoring system for multi-district urban areas with real-time visualization, sensor management, and time-series analytics powered by Apache Cassandra.",
     "bgcolor": "#0a1f1a",
     "overlay": "tech",
+    "github": "https://github.com/Schnee111/Smart-City-Monitoring-System",
+    "demo": "https://smart-city-nosql.vercel.app/",
     "sections": [
       {
         "type": "intro",
