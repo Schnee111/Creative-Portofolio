@@ -18,15 +18,15 @@ export default function ImageSection({ section, index }: ImageSectionProps) {
         switch (section.type) {
             case 'image-full':
                 // Truly full height - covers entire viewport
-                return 'w-[85vw] md:w-[85vw] h-screen'
+                return 'w-[85vw] h-[25vh] md:h-screen'
             case 'image-wide':
                 // Normal size - landscape orientation
-                return 'w-[85vw] md:w-[60vw] h-[60vh] md:h-[65vh] rounded-[2rem]'
+                return 'w-[85vw] md:w-[60vw] h-[25vh] md:h-[65vh] rounded-[2rem]'
             case 'image-tall':
                 // Normal size - portrait orientation
-                return 'w-[85vw] md:w-[40vw] h-[60vh] md:h-[90vh] rounded-[2rem]'
+                return 'w-[85vw] md:w-[40vw] h-[45vh] md:h-[90vh] rounded-[2rem]'
             default:
-                return 'w-[85vw] md:w-[60vw] h-[60vh] md:h-[65vh] rounded-[2rem]'
+                return 'w-[85vw] md:w-[60vw] h-[25vh] md:h-[65vh] rounded-[2rem]'
         }
     }
 
@@ -34,16 +34,19 @@ export default function ImageSection({ section, index }: ImageSectionProps) {
         <motion.div
             ref={containerRef}
             className={`relative flex-shrink-0 group ${getSizeClasses()} overflow-hidden bg-[#0a0a0a] z-10 ${section.type === 'image-wide' ? 'md:ml-[5vw]' : ''}`}
-            initial={{ scale: 0.9 }}
-            animate={isInView ? { scale: 1 } : { scale: 0.8 }}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ scale: 1, opacity: 0 }}
+            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 0 }}
+            transition={{
+                scale: { duration: window.innerWidth >= 768 ? 1.4 : 0, ease: [0.22, 1, 0.36, 1] },
+                opacity: { duration: 0.6, ease: "easeOut" }
+            }}
         >
-            {/* Image - Scales DOWN (opposite of container) */}
+            {/* Image - No scaling on mobile, zoom effect on desktop only */}
             <motion.div
                 className="absolute inset-0"
-                initial={{ scale: 1.3 }}
-                animate={isInView ? { scale: 1 } : { scale: 1.5 }}
-                transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ scale: 1 }}
+                animate={isInView ? { scale: 1 } : { scale: 1 }}
+                transition={{ duration: 0 }}
             >
                 <Image
                     src={section.src}

@@ -18,9 +18,9 @@ export default function TextSection({ section, index }: TextSectionProps) {
             <motion.div
                 ref={sectionRef}
                 className="w-[85vw] md:w-[35vw] flex-shrink-0 px-4 flex items-center justify-center"
-                initial={{ opacity: 0, x: 30 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-                transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
             >
                 <blockquote className="text-center">
                     <p className="text-2xl md:text-4xl text-white/80 font-light italic leading-relaxed">
@@ -34,18 +34,18 @@ export default function TextSection({ section, index }: TextSectionProps) {
     return (
         <motion.div
             ref={sectionRef}
-            className="w-[85vw] md:w-[25vw] flex-shrink-0 px-4 flex items-center justify-center"
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="w-[85vw] md:w-[25vw] flex-shrink-0 px-6 md:px-4 flex items-center"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
         >
-            <div className="text-left">
+            <div className="text-left w-full max-w-[85vw] md:max-w-none mx-auto md:mx-0">
                 {section.title && (
                     <span className="text-blue-500 font-mono text-[10px] mb-4 block tracking-widest">
                         {String(index).padStart(2, '0')} // {section.title}
                     </span>
                 )}
-                <p className="text-white/60 text-lg font-light leading-6">
+                <p className="text-white/60 text-base md:text-lg font-light leading-relaxed">
                     {section.content}
                 </p>
             </div>

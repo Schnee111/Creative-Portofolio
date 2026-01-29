@@ -22,10 +22,13 @@ export function useHorizontalScroll({
     const animationFrameRef = useRef<number | null>(null)
     const visualVelocityRef = useRef(0) // Store decoupled velocity
 
+    const lastWheelTimeRef = useRef(0)
+
     useEffect(() => {
         if (!mounted) return
 
         const onWheel = (e: WheelEvent) => {
+            lastWheelTimeRef.current = Date.now()
             // Block ALL wheel events on desktop to prevent native scrolling
             if (window.innerWidth >= 768) {
                 e.preventDefault()
@@ -86,6 +89,14 @@ export function useHorizontalScroll({
 
         const smoothLoop = () => {
             if (scrollContainerRef.current && window.innerWidth >= 768) {
+                // AUTO RESET PULL PROGRESS IF IDLE
+                const timeSinceLastWheel = Date.now() - lastWheelTimeRef.current;
+                if (timeSinceLastWheel > 150 && bufferRef.current > 0) {
+                    // Decay buffer pretty fast if user stops pulling
+                    bufferRef.current = Math.max(0, bufferRef.current - 15);
+                    setPullProgress((bufferRef.current / 600) * 100);
+                }
+
                 if (!isScrollLocked) {
                     const distance = Math.abs(targetScrollRef.current - currentScrollRef.current);
                     const dynamicLerp = Math.min(0.5, 0.05 + (distance / 1000));
