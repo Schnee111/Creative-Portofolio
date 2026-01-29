@@ -1,6 +1,6 @@
 [
   {
-    "id": "01",
+    "id": "road-guard",
     "title": "RoadGuard Vision",
     "subtitle": "COMPUTER VISION",
     "tech": "YOLOv8 / ByteTrack / Streamlit / Folium",
@@ -116,7 +116,7 @@
     ]
   },
   {
-    "id": "02",
+    "id": "kopi-chain",
     "title": "KopiChain Traceability",
     "subtitle": "BLOCKCHAIN",
     "tech": "Hyperledger Fabric / Go / React / Express.js",
@@ -246,7 +246,7 @@
     ]
   },
   {
-    "id": "03",
+    "id": "etl-stock-dashboard",
     "title": "ETL Stock Dashboard",
     "subtitle": "DATA ENGINEERING",
     "tech": "Airflow / Docker / MongoDB / Next.js / Python",
@@ -356,7 +356,7 @@
     ]
   },
   {
-    "id": "04",
+    "id": "smart-city-energy-monitor",
     "title": "Smart City Energy Monitor",
     "subtitle": "IOT & BIG DATA",
     "tech": "Spring Boot / Cassandra / Next.js / Python",
