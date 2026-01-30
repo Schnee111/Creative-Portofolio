@@ -106,9 +106,9 @@ export default function ProjectDetail() {
       style={{ backgroundColor: currentProject.bgcolor || '#050505', transition: 'background-color 1s ease' }}
       className="no-smooth-scroll relative min-h-screen md:fixed md:inset-0 md:h-screen w-full max-w-[100vw] md:overflow-hidden font-sans overscroll-none selection:bg-blue-500/20 selection:text-blue-200"
     >
-      <div className="hidden md:block">
+      {/* <div className="hidden md:block">
         <BackgroundOverlay type={currentProject.overlay} />
-      </div>
+      </div> */}
 
 
       {/* Header - Outside contentRef to avoid transform/filter interference */}

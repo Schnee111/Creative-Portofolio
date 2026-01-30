@@ -24,7 +24,7 @@ export default function SectionRenderer({
     nextProject,
     pullProgress,
     scrollContainerRef
-}: SectionRendererProps) {
+}: SectionRendererProps) { 
     switch (section.type) {
         case 'intro':
             return <IntroSection project={project} scrollContainerRef={scrollContainerRef} />
