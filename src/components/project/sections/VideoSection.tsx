@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { VideoSection as VideoSectionType } from '@/config/projects'
 
@@ -13,6 +13,14 @@ export default function VideoSection({ section, index }: VideoSectionProps) {
     const sectionRef = useRef<HTMLDivElement>(null)
     const videoRef = useRef<HTMLVideoElement>(null)
     const isInView = useInView(sectionRef, { once: false, margin: "0px -10% 0px -10%" })
+    const [isDesktop, setIsDesktop] = useState(false)
+
+    useEffect(() => {
+        const checkDesktop = () => setIsDesktop(window.innerWidth >= 768)
+        checkDesktop()
+        window.addEventListener('resize', checkDesktop)
+        return () => window.removeEventListener('resize', checkDesktop)
+    }, [])
 
     // Autoplay when in viewport, pause when out
     useEffect(() => {
@@ -28,13 +36,27 @@ export default function VideoSection({ section, index }: VideoSectionProps) {
         }
     }, [isInView])
 
+    // Desktop: scale animation, Mobile: fade only
+    const containerVariants = isDesktop
+        ? {
+            hidden: { scale: 0.9, opacity: 0 },
+            visible: { scale: 1, opacity: 1 },
+            exit: { scale: 0.9, opacity: 0 }
+        }
+        : {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 },
+            exit: { opacity: 0 }
+        }
+
     return (
         <motion.div
             ref={sectionRef}
             className="w-[90vw] md:w-[50vw] h-[60vh] md:h-[70vh] flex-shrink-0 relative overflow-hidden rounded-[2rem] bg-[#0a0a0a]"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "exit"}
+            transition={{ duration: isDesktop ? 1.4 : 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
             <video
                 ref={videoRef}
