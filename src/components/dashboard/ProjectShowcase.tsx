@@ -96,75 +96,100 @@ export default function ProjectShowcase() {
                 onMouseLeave={() => setHoveredId(null)}
                 onTouchStart={() => setHoveredId(project.id)}
               >
-                <div className="container mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-10 flex items-center justify-between">
+                {/* MOBILE LAYOUT - Flexbox */}
+                <div className="md:hidden container mx-auto px-4 sm:px-6 py-8 flex items-center gap-4">
+                  {/* Mobile Thumbnail */}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
+                    <Image
+                      src={getMainImage(project)}
+                      alt={project.title}
+                      width={80}
+                      height={80}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
 
-                  {/* PROJECT TITLE + MOBILE THUMBNAIL */}
-                  <motion.div
-                    className="flex items-center gap-4 md:gap-6 flex-1"
-                    initial={false}
-                    animate={{ x: isHovered ? 40 : 0 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  {/* Mobile Title */}
+                  <h2
+                    className={`text-xl sm:text-2xl font-black uppercase tracking-tighter leading-tight transition-all duration-300 ${isHovered ? 'text-blue-500 opacity-100' : 'text-white opacity-20'
+                      }`}
                   >
-                    {/* Mobile Thumbnail */}
-                    <div className="md:hidden w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
-                      <Image
-                        src={getMainImage(project)}
-                        alt={project.title}
-                        width={80}
-                        height={80}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
+                    {project.title}
+                  </h2>
+                </div>
 
-                    {/* ID (Desktop hover only) */}
-                    <motion.span
-                      className="hidden md:block font-mono text-xs text-blue-500"
-                      animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-                    >
-                      0{index + 1}
-                    </motion.span>
+                {/* DESKTOP LAYOUT - CSS Grid */}
+                <motion.div
+                  className="hidden md:grid container mx-auto px-12 py-10"
+                  style={{
+                    gridTemplateColumns: 'auto 1fr auto auto',
+                    gap: '2rem',
+                    alignItems: 'center'
+                  }}
+                  initial={false}
+                  animate={{ x: isHovered ? 40 : 0 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
+                  {/* Column 1: ID Number */}
+                  <motion.span
+                    className="font-mono text-xs text-blue-500 w-8"
+                    animate={{ opacity: isHovered ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    0{index + 1}
+                  </motion.span>
 
-                    {/* TITLE */}
-                    <h2
-                      className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tighter leading-none transition-all duration-300 ${isHovered ? 'text-blue-500 opacity-100' : 'text-white opacity-20'
-                        }`}
-                    >
-                      {project.title}
-                    </h2>
-                  </motion.div>
+                  {/* Column 2: Title (takes remaining space) */}
+                  <h2
+                    className={`text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tighter leading-tight transition-all duration-300 ${isHovered ? 'text-blue-500 opacity-100' : 'text-white opacity-20'
+                      }`}
+                    style={{ minWidth: 0 }} // Allow text to wrap within grid cell
+                  >
+                    {project.title}
+                  </h2>
 
-                  {/* KANAN: SUBTITLE / INFO (Muncul saat Hover) */}
-                  <div className="hidden md:block overflow-hidden">
+                  {/* Column 3: Subtitle/Info (Fixed width, appears on hover) */}
+                  <div className="w-[280px] overflow-hidden">
                     <AnimatePresence>
                       {isHovered && (
                         <motion.div
-                          initial={{ opacity: 0, x: -50 }}
+                          initial={{ opacity: 0, x: -30 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 20 }}
                           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                          className="flex items-center gap-8"
+                          className="flex flex-col items-end"
                         >
-                          <div className="flex flex-col items-end">
-                            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white">
-                              {project.tech.split(',')[0]} {/* Tech Stack */}
-                            </span>
-                            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white/40">
-                              {project.subtitle || "Interaction"}
-                            </span>
-                          </div>
-
-                          {/* Arrow Icon */}
-                          <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
-                              <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                          </div>
+                          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white text-right">
+                            {project.tech.split('/')[0].trim()}
+                          </span>
+                          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-white/40 text-right">
+                            {project.subtitle || "Interaction"}
+                          </span>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
 
-                </div>
+                  {/* Column 4: Arrow Icon (Fixed width) */}
+                  <div className="w-10 h-10 flex-shrink-0">
+                    <AnimatePresence>
+                      {isHovered && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.3 }}
+                          className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                          </svg>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+
               </Link>
             );
           })}
