@@ -1,5 +1,189 @@
 [
   {
+    "id": "dinamik20-management",
+    "title": "Dinamik20 Management Platform",
+    "subtitle": "FULL-STACK WEB APPLICATION",
+    "tech": "Next.js / Supabase / Azure / TypeScript / PostgreSQL",
+    "desc": "A comprehensive event and competition management platform for DINAMIK 20 featuring multi-role dashboards, WhatsApp-integrated ticketing, QR check-in system, and real-time voting.",
+    "bgcolor": "#0a1f14",
+    "overlay": "tech",
+    "github": "https://github.com/Schnee111/Dinamik20-Management-System",
+    "sections": [
+      {
+        "type": "intro",
+        "id": "intro"
+      },
+      {
+        "type": "image-wide",
+        "id": "hero",
+        "src": "/05-dinamik20-management/hero.jpg",
+        "alt": "Dinamik20 Management System Overview"
+      },
+      {
+        "type": "separator",
+        "id": "sep1",
+        "label": "THE EXPERIENCE"
+      },
+      {
+        "type": "video",
+        "id": "vid-mainpage",
+        "src": "/05-dinamik20-management/mainpage-demo.mp4"
+      },
+      {
+        "type": "separator",
+        "id": "sep2",
+        "label": "THE CHALLENGE"
+      },
+      {
+        "type": "text",
+        "id": "t1",
+        "title": "Manual Event Chaos",
+        "content": "Managing a large-scale high school competition involves coordinating hundreds of participants, teachers, judges, and committee members. Manual processes lead to verification delays, payment tracking issues, and communication breakdowns."
+      },
+      {
+        "type": "separator",
+        "id": "sep3",
+        "label": "ARCHITECTURE"
+      },
+      {
+        "type": "text",
+        "id": "t2",
+        "title": "Modern Stack Integration",
+        "content": "Built with Next.js 16, Supabase for real-time database and authentication, Azure Blob Storage for file management, Fonnte for WhatsApp notifications, and Brevo for email communications."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-architecture",
+        "src": "/05-dinamik20-management/architecture.png",
+        "alt": "System Architecture Diagram"
+      },
+      {
+        "type": "separator",
+        "id": "sep4",
+        "label": "MULTI-ROLE SYSTEM"
+      },
+      {
+        "type": "text",
+        "id": "t3",
+        "title": "5 Distinct Dashboards",
+        "content": "Role-based access control with dedicated dashboards for Admin, Panitia (Committee), Juri (Judges), Guru (Teachers), and Peserta (Participants). Each role has tailored interfaces and permissions."
+      },
+      {
+        "type": "image-full",
+        "id": "img-dashboard-panitia",
+        "src": "/05-dinamik20-management/dashboard-panitia.png",
+        "alt": "Committee Dashboard with Tab Navigation"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-dashboard-peserta",
+        "src": "/05-dinamik20-management/dashboard-peserta.png",
+        "alt": "Participant Dashboard"
+      },
+      {
+        "type": "separator",
+        "id": "sep5",
+        "label": "COMPETITION FLOW"
+      },
+      {
+        "type": "text",
+        "id": "t4",
+        "title": "End-to-End Pipeline",
+        "content": "Complete competition lifecycle: Registration with document upload, verification workflow, invoice generation with unique codes, payment confirmation, submission portal with auto-credentials, and multi-criteria judging system."
+      },
+      {
+        "type": "image-wide",
+        "id": "img-berkas",
+        "src": "/05-dinamik20-management/verifikasi-berkas.png",
+        "alt": "Document Verification Panel"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-pembayaran",
+        "src": "/05-dinamik20-management/verifikasi-pembayaran.png",
+        "alt": "Payment Verification with Proof Upload"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-penjurian",
+        "src": "/05-dinamik20-management/form-penjurian.png",
+        "alt": "Judging Form with Scoring Criteria"
+      },
+      {
+        "type": "separator",
+        "id": "sep6",
+        "label": "DINAMIKTALKS EVENT"
+      },
+      {
+        "type": "text",
+        "id": "t5",
+        "title": "Seminar Management",
+        "content": "Public registration with bundle pricing (1/3/5 participants), offline QR ticketing and online streaming options, automatic WhatsApp notifications for verification status, and data revision links for rejected registrations."
+      },
+      {
+        "type": "video",
+        "id": "vid-dinamiktalks",
+        "src": "/05-dinamik20-management/dinamiktalks-demo.mp4"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-talks-admin",
+        "src": "/05-dinamik20-management/dinamiktalks-admin.png",
+        "alt": "DinamikTalks Admin Panel"
+      },
+      {
+        "type": "separator",
+        "id": "sep7",
+        "label": "QR TICKETING"
+      },
+      {
+        "type": "text",
+        "id": "t6",
+        "title": "Digital E-Ticket System",
+        "content": "Unique ticket codes with QR generation, digital ticket pages with check-in status, real-time QR scanning via camera, Zoom link broadcasting for online attendees, and feedback collection system."
+      },
+      {
+        "type": "image-tall",
+        "id": "img-ticket",
+        "src": "/05-dinamik20-management/e-ticket.png",
+        "alt": "Digital E-Ticket with QR Code"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-scanner",
+        "src": "/05-dinamik20-management/qr-scanner.png",
+        "alt": "QR Scanner Dashboard"
+      },
+      {
+        "type": "separator",
+        "id": "sep8",
+        "label": "VOTING SYSTEM"
+      },
+      {
+        "type": "text",
+        "id": "t7",
+        "title": "Poster Voting Gallery",
+        "content": "Public voting for competition posters with anti-fraud protection using device fingerprinting and cookie-based duplicate prevention. Real-time vote counting and randomized gallery display for fairness."
+      },
+      {
+        "type": "image-full",
+        "id": "img-voting",
+        "src": "/05-dinamik20-management/voting-gallery.png",
+        "alt": "Poster Voting Gallery"
+      },
+      {
+        "type": "image-wide",
+        "id": "img-vote-detail",
+        "src": "/05-dinamik20-management/vote-detail.png",
+        "alt": "Vote Detail and Statistics"
+      },
+      {
+        "type": "bridge",
+        "id": "bridge"
+      }
+    ]
+  },
+  {
     "id": "road-guard",
     "title": "RoadGuard Vision",
     "subtitle": "COMPUTER VISION",
